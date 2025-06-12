@@ -1,0 +1,8 @@
+# GMT 6 Session common arguments shelf
+BEGIN GMT 6.1.1
+B	40:Time after origin (s):/1:Slowness (s/deg):WSen
+J	X
+JX	X15c/10c
+R	1100/1180/0/8
+@L	1
+END

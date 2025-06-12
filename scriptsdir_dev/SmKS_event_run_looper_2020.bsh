@@ -1,0 +1,180 @@
+#! /bin/bash
+#Starts script in a loop and distributes jobs using "screen". Ensure that you understand "screen" before you start this process
+#Dan A Frost
+#19.2.2020
+#UC Berkeley
+
+
+#Directories
+home_dir=/mnt/raid1/dfrost/Work/Pdiff/
+cd $home_dir
+#cd $home_dir"eventdir/"
+
+
+#List of each event directory (with component name) to run
+#-------
+#WARNING
+#-------
+#cat<<EOF>dirlist_$$
+#201007232251_new2022_SAC_BHR
+#201007232251_new2022_SAC_BHT
+#201007232251_new2022_SAC_BHZ
+#201007240535_new2022_SAC_BHR
+#201007240535_new2022_SAC_BHT
+#201007240535_new2022_SAC_BHZ
+#201108300657_new2022_SAC_BHR
+#201108300657_new2022_SAC_BHT
+#201108300657_new2022_SAC_BHZ
+#201111080259_new2022_SAC_BHR
+#201111080259_new2022_SAC_BHT
+#201111080259_new2022_SAC_BHZ
+#EOF
+
+cat<<EOF>dirlist_$$
+201201240052_new2022_SAC_BHR
+201201240052_new2022_SAC_BHT
+201201240052_new2022_SAC_BHZ
+201304260653_new2022_SAC_BHR
+201304260653_new2022_SAC_BHT
+201304260653_new2022_SAC_BHZ
+201305140032_new2022_SAC_BHR
+201305140032_new2022_SAC_BHT
+201305140032_new2022_SAC_BHZ
+201308120416_new2022_SAC_BHR
+201308120416_new2022_SAC_BHT
+201308120416_new2022_SAC_BHZ
+EOF
+
+
+#cat<<EOF>dirlist_$$
+#201109051755_new2020_SYNTHS/newRUN/GLADM15/sacfiles_R
+#201109051755_new2020_SYNTHS/newRUN/GLADM15/sacfiles_T
+#201109051755_new2020_SYNTHS/newRUN/GLADM15/sacfiles_Z
+#201109051755_new2020_SYNTHS/newRUN/PREMonlyattent/sacfiles_R
+#201109051755_new2020_SYNTHS/newRUN/PREMonlyattent/sacfiles_T
+#201109051755_new2020_SYNTHS/newRUN/PREMonlyattent/sacfiles_Z
+#201109051755_new2020_SYNTHS/newRUN/PREM/sacfiles_R
+#201109051755_new2020_SYNTHS/newRUN/PREM/sacfiles_T
+#201109051755_new2020_SYNTHS/newRUN/PREM/sacfiles_Z
+#201109051755_new2020_SYNTHS/newRUN/S40RTS_1Dcrust/sacfiles_R
+#201109051755_new2020_SYNTHS/newRUN/S40RTS_1Dcrust/sacfiles_T
+#201109051755_new2020_SYNTHS/newRUN/S40RTS_1Dcrust/sacfiles_Z
+#201109051755_new2020_SYNTHS/newRUN/S40RTS/sacfiles_R
+#201109051755_new2020_SYNTHS/newRUN/S40RTS/sacfiles_T
+#201109051755_new2020_SYNTHS/newRUN/S40RTS/sacfiles_Z
+#EOF
+
+
+
+cat<<EOF>dirlist_$$
+201003201400_new2022_SAC_BHZ
+201109151931_new2022_SAC_BHZ
+201205262148_new2022_SAC_BHZ
+201003201400_new2022_SAC_BHT
+201109151931_new2022_SAC_BHT
+201205262148_new2022_SAC_BHT
+201003201400_new2022_SAC_BHR
+201109151931_new2022_SAC_BHR
+201205262148_new2022_SAC_BHR
+EOF
+
+cat<<EOF>dirlist_$$
+200708081704_new2022_SAC_BHZ
+200708081704_new2022_SAC_BHT
+200708081704_new2022_SAC_BHR
+200708081705_new2022_SAC_BHZ
+200708081705_new2022_SAC_BHT
+200708081705_new2022_SAC_BHR
+EOF
+
+cat<<EOF>dirlist_$$
+/home/dfrost/Work/Pdiff/201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_T
+/home/dfrost/Work/Pdiff/201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_R
+/home/dfrost/Work/Pdiff/201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_Z
+EOF
+
+#201104230416_new2022_SAC_BHR
+#201104230416_new2022_SAC_BHT
+#201104230416_new2022_SAC_BHZ
+
+#cat<<EOF>dirlist_$$
+#201207251120_new2022_SAC_BHR
+#201207251120_new2022_SAC_BHZ
+#201207251120_new2022_SAC_BHT
+#EOF
+
+cat<<EOF>dirlist_$$
+201105100855_new2022_SAC_BHZ
+201105100855_new2022_SAC_BHT
+201105100855_new2022_SAC_BHR
+201202021334_new2022_SAC_BHR
+201202021334_new2022_SAC_BHT
+201202021334_new2022_SAC_BHZ
+201203090709_new2022_SAC_BHT
+201203090709_new2022_SAC_BHZ
+201203090709_new2022_SAC_BHR
+201101050646_new2022_SAC_BHT
+201101050646_new2022_SAC_BHZ
+201101050646_new2022_SAC_BHR
+EOF
+
+cat<<EOF>dirlist_$$
+201109051755_new2020_SYNTHS/newRUN/prem_5s_2011_noflags_Atten/sacfiles_R
+201109051755_new2020_SYNTHS/newRUN/prem_5s_2011_noflags_Atten/sacfiles_T
+201109051755_new2020_SYNTHS/newRUN/prem_5s_2011_noflags_Atten/sacfiles_Z
+201109051755_new2020_SYNTHS/newRUN/s40rts_5s_2011_noflags_Atten/sacfiles_R
+201109051755_new2020_SYNTHS/newRUN/s40rts_5s_2011_noflags_Atten/sacfiles_T
+201109051755_new2020_SYNTHS/newRUN/s40rts_5s_2011_noflags_Atten/sacfiles_Z
+EOF
+
+cat<<EOF>dirlist_$$
+201109051755_new2020_SYNTHS/newRUN/prem_5s_2011_noflags_Atten_noise/sacfiles_R
+EOF
+
+cat<<EOF>dirlist_$$
+201107290742_new2022_SAC_BHR
+201107290742_new2022_SAC_BHT
+201107290742_new2022_SAC_BHZ
+EOF
+
+cat<<EOF>dirlist_$$
+AdeoluTests/201006240532_new2020_SAC_BHZ
+AdeoluTests/201006240532_new2020_SAC_BHR
+AdeoluTests/201006240532_new2020_SAC_BHT
+EOF
+
+region=US #US or Alaska
+#region=Alaska #US or Alaska
+
+data_type=obs #obs or synth
+#data_type=synthB
+#data_type=synthM
+
+evcount=`cat dirlist_$$ | wc -l`
+if [ $evcount -gt 20 ]; then
+echo "TOO MANY EVENTS TO RUN SIMULTANEOUSLY, MARK WILL GET MAD"
+	exit
+fi
+
+#Loop start: loop over event directories
+sess_num=1001
+for dir in `cat dirlist_$$`; do
+echo ---
+cd $dir
+comp=`echo $dir | rev  |cut -c1`
+echo comp $comp sess_num $sess_num
+pwd
+
+#screen -S $sess_num -d -m  $home_dir"/SmKS/scriptsdir/SmKS_TALooper_2020.bsh" 1 $comp $region $data_type
+screen -S $sess_num -d -m  $home_dir"/SmKS/scriptsdir/SmKS_TALooper_2020_AdeoluTest.bsh" 1 $comp $region $data_type
+
+
+
+sleep 1s
+
+cd $home_dir
+
+((sess_num++))
+#Loop end : loop over event directories
+done
+\rm dirlist_$$

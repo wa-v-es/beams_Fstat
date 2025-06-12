@@ -1,0 +1,157 @@
+#! /bin/bash
+#Copies sac info from soduser to local directory
+#Dan A Frost
+#24.3.2021
+#UC Berkeley
+
+
+#Directories
+home_dir=/mnt/raid1/dfrost/Work/Pdiff/
+smks_dir=$home_dir"SmKS/"
+cd $smks_dir"eventdir/"
+
+
+#List of events and components to create directories of
+#200910072141 BHR
+#200910072141 BHT
+#200910072141 BHZ
+
+
+cat <<EOF > "dirlist_"$$
+201007232251 BHR 
+201007240535 BHR
+201108300657 BHR
+201111080259 BHR
+201201240052 BHR
+201305140032 BHR
+201304260653 BHR
+201308120416 BHR
+201007232251 BHT 
+201007240535 BHT
+201108300657 BHT
+201111080259 BHT
+201201240052 BHT
+201305140032 BHT
+201304260653 BHT
+201308120416 BHT
+201007232251 BHZ 
+201007240535 BHZ
+201108300657 BHZ
+201111080259 BHZ
+201201240052 BHZ
+201305140032 BHZ
+201304260653 BHZ
+201308120416 BHZ
+EOF
+
+cat <<EOF > "dirlist_"$$
+201205262148 BHR
+201109151931 BHR
+201003201400 BHR
+201205262148 BHT
+201109151931 BHT
+201003201400 BHT
+201205262148 BHZ 
+201109151931 BHZ
+201003201400 BHZ
+EOF
+
+cat <<EOF > "dirlist_"$$
+201101050646 BHR 
+201101050646 BHZ 
+201101050646 BHT 
+201105100855 BHR
+201202021334 BHR
+201203090709 BHR
+201105100855 BHZ
+201202021334 BHZ
+201203090709 BHZ
+201105100855 BHT
+201202021334 BHT
+201203090709 BHT
+EOF
+
+
+cat <<EOF > "dirlist_"$$
+201107290742 BHR
+201107290742 BHT
+201107290742 BHZ
+EOF
+
+cat<<EOF > "dirlist_"$$
+201108241746 BHR
+201108241746 BHT
+201108241746 BHZ
+EOF
+
+while read event comp; do
+#-----------------
+#Clean up SAC data
+#-----------------
+#Event to collect
+#event=$1
+#comp=${2-BHR}
+
+soduser="/home/soduser/Merge.Mw6.50km/"$event"/"      #DO NOT CHANGE
+event_subdir=$smks_dir"eventdir/"$event"_new2023_SAC_"$comp"/"
+
+#CHANGE DIRECTORY
+\rm -r $event_subdir
+mkdir $event_subdir
+cd $event_subdir
+
+
+#COPY OVER SAC FILES TO USE
+ls $soduser"/"*".sac" | awk -F"/" '{print $NF}' > $event_subdir"/"$event"_sacfile_ALL.txt"
+
+echo --
+head $event_subdir"/"$event"_sacfile_ALL.txt"
+
+eventstation=`ls $soduser"eventStation."$event | sed '/dump/d'`
+if [ `echo ${#eventstation[*]}` -ne 1 ]; then
+	echo TOO MANY EVENT STATION FILES
+	echo ${eventstation[*]}
+	exit
+fi	
+head $eventstation
+
+date=`echo $eventstation | cut -f2 -d'.'`
+infile=$event"_sacfile_ALL.txt"
+outfile=$event"_sacfile_CUT.txt"
+stationfile=$event"_stations_CUT.txt"
+echo $event
+
+\rm $outfile
+touch $outfile
+
+#FOR TA IN THE LOWER 48, CHANGE FOR STATIONS IN OTHER LOCATIONS
+minlat=20
+maxlat=55
+minlon=-135
+maxlon=-60
+
+awk '{if ($9>='$minlat' && $9<='$maxlat' && $10>'$minlon' && $10<='$maxlon') print $9, $10, '$date'"."$2"."$1, $1, $2}' $eventstation > $stationfile
+
+while read slat slon sacname station network; do
+#grep $sacname $infile | grep Z| awk '{print $1, '$slat', '$slon'}' >>  $outfile
+grep $sacname $infile | grep $comp | awk '{print $1, '$slat', '$slon'}' >>  $outfile
+done < $stationfile
+
+echo ==== 
+head $outfile
+gmt gmtinfo $outfile
+
+awk '{print "'$soduser'"$1}' $outfile | awk '!seen[$1]++' > copyfile_$$
+echo --
+head copyfile_$$
+#
+##Copy over sac files to use
+cat copyfile_$$ | xargs cp -t $event_subdir
+cp $eventstation .
+\rm copyfile_$$ $outfile $infile
+
+pwd
+cd $smks_dir
+done < dirlist_$$
+
+

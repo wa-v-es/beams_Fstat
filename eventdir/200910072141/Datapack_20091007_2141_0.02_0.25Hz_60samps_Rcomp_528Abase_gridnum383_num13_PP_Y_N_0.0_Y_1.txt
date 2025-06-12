@@ -1,0 +1,9 @@
+-0.75 -3 10 0 0 LT Origin: 2009 10 07 21:41
+-0.75 -2 10 0 0 LT ArrCen la/lo/elv:30.33 -103.22 1080 Nst:13
+-0.75 -1 10 0 0 LT ArrBaseStn: 528A, grid la/lp 30, -103
+-0.75 0 10 0 0 LT Event la/lo/dp: 4.09 122.54 586.80 Mb:6.8
+-0.75 1 10 0 0 LT Dist: 124.7 Baz (Arr-Evt): -59.8
+-0.75 2 10 0 0 LT Frequencies: 0.02 - 0.25 Hz Delta: 60
+-0.75 3 10 0 1 LT TrcesSNR mn,SD,min,max: 3.02 1.14 1.46 5.16
+-0.75 4 10 0 1 LT Pred PP (prem) time/U: 1188.41 6.556
+-0.75 5 10 0 1 LT Pick time(beam)/U/Bz (XF): 1194.30 9.00  -16.00

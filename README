@@ -1,0 +1,220 @@
+#README
+#SmKS script and associated packages
+#Daniel A Frost
+#UC Berkeley
+#12.Jan.2020
+
+
+#-----
+###########################
+#Jonathan's comment
+-1. The following dependencies will be needed. Please download and install them:
+#If you do not have sac, it can be downloaded here: https://seiscode.iris.washington.edu/projects/sac
+#If you do not have python 3, it can be downloaded here: https://www.python.org/downloads/ or through anaconda: https://www.anaconda.com/products/individual
+#If you do not have TauP, please also download it here: https://ds.iris.edu/ds/nodes/dmc/software/downloads/taup/
+#If you do not have, it can be dowloaded here: http://www.soest.hawaii.edu/gmt/
+
+#and follow the corresponding installation instructions.
+###########################
+
+#Installation
+0.
+switch shell to "bash" by calling "bash" in the command line
+
+1.
+#In "Install.bsh" change paths where it says "CHANGE FOR INSTALL". These paths are: "sacpath", "py_path", and "tauppath" to match local paths of sac, python3, and taup installations.
+#For example, run "which sac", "which python3", and "which taup" and use these paths.
+#For example
+#macbook-pro:SmKS dafrost$ which sac
+#/Users/dafrost/Work/Programs/sac/bin/sac
+#For sac and taup use the root directory, i.e. the one that the executables are in, such as "/Users/dafrost/Work/Programs/sac" and "/Users/dafrost/Work/Programs/TauP-2.4.6-SNAPSHOT" and for python3 use the path to the executable itself such as "/usr/local/bin/python3". 
+#IMPORTANT: exclude the ending "/" for all three paths.
+#NOTE: the python scripts will only work with python3, and will fail with 2.7
+
+#########################
+#Comment by Jonathan: Why not move these paths to the very beginning of the Install.bsh. This factually does not make a difference but will be easier to find. You could write something like:
+#Change paths ... in the first uncommented lines of the Install.bsh script.
+#For Jonathan's system setup, these lines read:
+
+#saclib="SACLIB=/usr/local/sac/lib/sacio.a"   #CHANGE FOR INSTALL
+#pypath="py3=/Users/jw2449/anaconda3/envs/py3/bin/python3"     #CHANGE FOR INSTALL
+#If you do not use anaconda, the path, like Dan, the pypath could read like
+#pypath="/usr/local/bin/python3"               #CHANGE FOR INSTALL
+#########################
+
+
+
+1a.
+#In "Install.bsh" set your "$system_type" to either mac or anything else. This is to deal with the default version of the command "sed".
+#The codes are written for "gsed" aliased as "sed", but mac uses "BSDsed" executed as "sed"
+#Also, change the path of gsed in "Install.bsh" on lines 11, and 131-136 
+
+###########################
+#Again, have all the changes that are needed in the first lines?
+#The sed path can look like: sed='/usr/local/bin/gsed'
+
+
+#Possible error on MacOS after running Install.bsh and how to fix it:
+
+#Error message:
+#ld: library not found for -lSystem
+#collect2: error: ld returned 1 exit status
+#make: *** [all] Error 1
+
+#This is likely a gfortran issue, which can be verified by trying to run a HelloWorld.f90 (the same error should occur)
+
+#If that's the case:
+#The problem is that gfortran is compiled with /Library/Developer/CommandLineTools/SDKs/MacOSXx.x.sdk and gfortran saves this location into its binary. 
+#However, one might have /Library/Developer/CommandLineTools/SDKs/MacOSXy.y.sdk which becomes a problem.
+#(This can be verified if you cd to /Library/Developer/CommandLineTools/SDKs and, for example, see multiple *.sdk versions)
+#A workaround is to do export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSXy.y.sdk, 
+#in Jonathan's case `$export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk'
+
+
+
+
+
+###########################
+
+
+
+
+
+
+2. 
+#Run Install.bsh by typing "Install.bsh"
+#This unpacks everything and installs the codes locally
+#There shouldn't be any errors
+
+###########################
+#If Install.bsh does not work, try ./Install.bsh
+###########################
+
+
+3.
+#Add the scriptsdir and bindir paths to your .bshrc
+#Ensure that gmt5 or gmt6 are in your path
+#Ensure that taup (of some version) is in your path
+#Ensure that sac (of some version) is in your path
+#Run "source ~/.bashrc"
+
+#OR THE EASY ALTERNATIVE
+#There is an example bashrc in this package called "MWE_bashrc" that you can use if you don't have a bashrc. It should be automatically configured to your system by "Install.bsh" but check and change the paths from "dafrost" to match those on your own system. Detailed instructions for checking are below:
+Update the following five paths in "MWE_bashrc" to match your own directories. The path "/Users/dafrost/Work/Temps/SmKS/" is where you've unpacked the code to (where the file "MWE_bashrc" should be)
+export PATH=$PATH:/Users/dafrost/Work/Temps/SmKS/bin/
+export PATH=$PATH:.:/Users/dafrost/Work/Temps/SmKS/scriptsdir/
+export TAUP_HOME=/Users/dafrost/Work/Programs/TauP-2.4.6-SNAPSHOT
+export PATH=$PATH:/Users/dafrost/Work/Programs/sac/bin
+export SACDIR=/Users/dafrost/Work/Programs/sac
+
+
+Then either:
+1) copy this to "~/.bashrc", then run "source ~/.bashrc"
+or 2) type "source MWE_bashrc" in the "SmKS_Package/" directory with the "MWE_bashrc" file
+
+
+
+
+#-----
+#Running the example event
+1.
+#cd to eventdir/200910072141
+#eventdir is where we store the event sacfiles and eventfiles for each individual event, such as this example for an event on 2009/10/07 at 21:41
+
+2.
+#In eventdir/200910072141, run "SmKS_TALooper_2020.bsh 383"
+#This is an example that calculates beams at subarray number 383. There are no other sac files in the directory (for sake of file size) so using any number other than 383 will cause the script to fail.
+#Compare your output ps file with that in the Example_output dir
+
+
+#-----
+#Running more subarrays and phases
+0.
+#Change home directory in SAC_event_copy.bsh to your directory. 
+#Run SAC_event_copy.bsh to construct directories of the whole USArray data for event 200910072141 for R,T, and Z components
+Ask Dan Frost for the full data directory.
+
+1. 
+#Go into SmKS_TALooper_2020.bsh and remove comments from the start of lines labelled "#TO_ADD" and delete/comment out lines labelled "TO_REMOVE"
+
+#EITHER
+
+2a.
+#cd to eventdir
+
+3a.
+#run "SmKS_TALooper_2020.bsh"
+#This now runs the whole event from the very beginning. It will calculate vespagrams for all subarrays and all SmKS/SKScd/SKIKS phases
+
+#OR
+2b.
+#cd to eventdir
+
+3b.
+#Change home directory in SmKS_event_run_looper_2020.bsh
+#Run SmKS_event_run_looper_2020.bsh
+#This runs all three components simultaneously as three different "screen" processes
+
+
+#-----
+#Increasing precision
+#The default calculates vespoagrams with coarse slowness and back-azimuth spacing. You can switch to finer spacing by entering SmKS_TALooper_2020.bsh and changing the variable $gridtype to "full"
+
+#-----
+#Full workflow
+#The workflow below is highly automated so ensure you know what you're doing when you run this or else you'll waste a load of time and space.
+# When you're ready to run the who thing from collecting of data (from soduser), through to producing PS, then PDF, then sac2mseed files, do the following:
+1. SAC_event_copy.bsh
+- Update list of events (with components) then run code
+
+2. SmKS_event_run_looper_2020.bsh
+- Update list of event and component directories (from those made in SAC_event_copy.bsh) then run code
+- This will run SmKS_TALooper_2020.bsh for each event, which runs SmKS_Vespapack_2020.bsh for each gridpoint
+
+3. SmKS_PDFpacker_2020.bsh
+- Update list of event and component directories (as above but include ending "/" in dir name) then run code
+
+4. SmKS_sac2mseed.bsh
+- Update list of events (no component names, each event directory covers all three components) then run code
+
+
+#-----
+#Accessing the info in the tick boxes
+#After the postscript files have been generated, you can convert them to pdf files (an example script is at the end of this section).
+#Each PDF page then has a tick box in it that is labelled with information about the specific subarray used to form that page of the larger PDF file.
+#You an tick these boxes to select if you want to keep this subarray or not and then save the PDF file.
+#You can access this information that is now saved in the PDF file using the PDFtoolkit, pdftk. Download this here: https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/
+#Ask Dan for more details about this. You have to break the whole PDF file apart using the "split" tool in Adobe Acrobat and then run pdftk on each of the pdf files. 
+#This sounds clunky but it saves a huge amount of time to use the PDF to select subarrays to use.
+
+
+#-----
+#Subscripts of SmKS_Vespapack_2020.bsh (each has short instructions inside)
+SmKS_onset_pick_2020.bsh       - Subscript of SmKS_Vespapack_2020.bsh for picking phase onsets (don't need to modify)
+SmKS_Record_Plot_2020.bsh      - Subscript of SmKS_Vespapack_2020.bsh for plotting "record.ps" files (don't need to modify)
+
+
+#-----
+#Utility scripts to be run after SmKS_TALooper2020.bsh and SmKS_Vespapack_2020.bsh (each has short instructions inside)
+SAC_event_copy.bsh             - copies sac files from ASU's soduser directory to local directory for processing
+SmKS_event_run_looper_2020.bsh - runs SmKS_TALooper_2020.bsh for set of events and components using "screen" to distribute the jobs
+SmKS_PDFpacker_2020.bsh        - constructs ordered PDF files of all output PS files from SmKS_TALooper_2020.bsh (best code to use for producing PDFs)
+SmKS_plot_3comp.bsh            - quick script for plotting and comparing 3 components for a given event and subarray
+SmKS_sac2mseed.bsh             - writes xy (not sac) outputs of 3 components of SmKS_Vespapack_2020.bsh to a single file ready for conversion to mseed 
+SmKS_subarray_positions.bsh    - writes out list of subarray locations and constituent stations
+
+
+#Instructions for creating additional code PDFwriter.bsh to convert multiple PS files to a single PDF file (quick and dirty compared with SmKS_PDFpacker_2020.bsh)
+#----- Write this into "PDFwriter.bsh" (without the leading "#" on each line) and use this as: PDFwriter.bsh *ps Output.pdf
+# #!/bin/bash
+# 
+# #Input file names then output file name
+# #Input file names (may include wildcard *).ps, output file name .ps
+# 
+# gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=${BASH_ARGV[0]} -dBATCH $(
+# for i in $(seq $(expr $# - 1) -1 1)
+# do 
+#   echo -n "${BASH_ARGV[$i]} "
+# done) 
+#-----
+

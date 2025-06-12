@@ -1,0 +1,487 @@
+#! /bin/bash
+#Loops over events, phases, and subarrays to create PDF files of all
+#Dan A Frost
+#19.2.2020
+#UC Berkeley
+
+
+#Directories
+home_dir=/mnt/raid1/dfrost/Work/Pdiff/
+cd $home_dir
+#cd $home_dir"/eventdir/"
+
+
+#List of event directories (with component name) to loop over and construct PDF file
+#IMPORTANT!! NEEDS ENDING "/" IN DIR NAME
+cat<<EOF > dirlist_$$
+200611141421_new2020_SAC_BHR
+200611141421_new2020_SAC_BHT
+200611141421_new2020_SAC_BHZ
+200612010358_new2020_SAC_BHR
+200612010358_new2020_SAC_BHT
+200612010358_new2020_SAC_BHZ
+200704030335_new2020_SAC_BHR
+200704030335_new2020_SAC_BHT
+200704030335_new2020_SAC_BHZ
+200705191719_new2020_SAC_BHR
+200705191719_new2020_SAC_BHT
+200705191719_new2020_SAC_BHZ
+200807050212_new2020_SAC_BHR
+200807050212_new2020_SAC_BHT
+200807050212_new2020_SAC_BHZ
+200807050212_new2020_SAC_BHT
+200810122055_new2020_SAC_BHR
+200810122055_new2020_SAC_BHT
+200810122055_new2020_SAC_BHZ
+200909020755_new2020_SAC_BHR
+200909020755_new2020_SAC_BHT
+200909020755_new2020_SAC_BHZ
+200910072141_new2020_SAC_BHR
+200910072141_new2020_SAC_BHT
+200910072141_new2020_SAC_BHZ
+200910160952_new2020_SAC_BHR
+200910160952_new2020_SAC_BHT
+200910160952_new2020_SAC_BHZ
+201007290731_new2020_SAC_BHR
+201007290731_new2020_SAC_BHT
+201007290731_new2020_SAC_BHZ
+EOF
+
+cat<<EOF > dirlist_$$
+201208140259_new2020_SAC_BHZ
+201208140259_new2020_SAC_BHT
+201208140259_new2020_SAC_BHR
+201206230434_new2020_SAC_BHT
+201206230434_new2020_SAC_BHR
+201204170713_new2020_SAC_BHZ
+201204170713_new2020_SAC_BHT
+201204170713_new2020_SAC_BHR
+201203212215_new2020_SAC_BHZ
+201203212215_new2020_SAC_BHT
+201203212215_new2020_SAC_BHR
+201201240052_new2020_SAC_BHZ
+201201240052_new2020_SAC_BHT
+201201240052_new2020_SAC_BHR
+EOF
+
+
+#cat<<EOF > dirlist_$$
+#201112140504_new2020_SAC_BHZ
+#201112140504_new2020_SAC_BHT
+#201112140504_new2020_SAC_BHR
+#201110210802_new2020_SAC_BHZ
+#201110210802_new2020_SAC_BHT
+#201110210802_new2020_SAC_BHR
+#201109051755_new2020_SAC_BHZ
+#201109051755_new2020_SAC_BHT
+#201109051755_new2020_SAC_BHR
+#EOF
+#201109051755_new2020_SYNTHS/1D_prem_noise/sacfiles_MXR
+cat<<EOF>dirlist_$$
+201110210802_new2020_SAC_BHT
+201110210802_new2020_SAC_BHR
+201112140504_new2020_SAC_BHR
+201112140504_new2020_SAC_BHT
+201110210802_new2020_SAC_BHZ
+201112140504_new2020_SAC_BHZ
+201109051755_new2020_SAC_BHR
+201109051755_new2020_SAC_BHT
+201109051755_new2020_SAC_BHZ
+201201240052_new2020_SAC_BHR
+201201240052_new2020_SAC_BHT
+201201240052_new2020_SAC_BHZ
+201203212215_new2020_SAC_BHR
+201203212215_new2020_SAC_BHT
+201203212215_new2020_SAC_BHZ
+201204170713_new2020_SAC_BHR
+201204170713_new2020_SAC_BHT
+201204170713_new2020_SAC_BHZ
+201206230434_new2020_SAC_BHR
+201206230434_new2020_SAC_BHT
+201208140259_new2020_SAC_BHR
+201208140259_new2020_SAC_BHT
+201208140259_new2020_SAC_BHZ
+201007290731_new2020_SAC_BHZ
+201007290731_new2020_SAC_BHT
+201007290731_new2020_SAC_BHR
+200910160952_new2020_SAC_BHZ
+200910160952_new2020_SAC_BHT
+200910160952_new2020_SAC_BHR
+200910072141_new2020_SAC_BHZ
+200910072141_new2020_SAC_BHT
+200910072141_new2020_SAC_BHR
+200909020755_new2020_SAC_BHZ
+200909020755_new2020_SAC_BHT
+200909020755_new2020_SAC_BHR
+200810122055_new2020_SAC_BHZ
+200810122055_new2020_SAC_BHT
+200810122055_new2020_SAC_BHR
+200807050212_new2020_SAC_BHT
+200807050212_new2020_SAC_BHZ
+200807050212_new2020_SAC_BHR
+200705191719_new2020_SAC_BHZ
+200705191719_new2020_SAC_BHT
+200705191719_new2020_SAC_BHR
+200704030335_new2020_SAC_BHZ
+200704030335_new2020_SAC_BHT
+200704030335_new2020_SAC_BHR
+200612010358_new2020_SAC_BHZ
+200612010358_new2020_SAC_BHT
+200612010358_new2020_SAC_BHR
+200611141421_new2020_SAC_BHZ
+200611141421_new2020_SAC_BHT
+200611141421_new2020_SAC_BHR
+201309210139_new2020_SAC_BHR
+201212101653_new2020_SAC_BHT
+201212101653_new2020_SAC_BHR
+201309210139_new2020_SAC_BHZ
+201309210139_new2020_SAC_BHT
+201309011152_new2020_SAC_BHZ
+201309011152_new2020_SAC_BHT
+201309011152_new2020_SAC_BHR
+201308120053_new2020_SAC_BHZ
+201308120053_new2020_SAC_BHT
+201308120053_new2020_SAC_BHR
+201307071835_new2020_SAC_BHZ
+201307071835_new2020_SAC_BHT
+201307071835_new2020_SAC_BHR
+201304200451_new2020_SAC_BHZ
+201304200451_new2020_SAC_BHT
+201304200451_new2020_SAC_BHR
+201304190305_new2020_SAC_BHZ
+201304190305_new2020_SAC_BHT
+201304190305_new2020_SAC_BHR
+201304060442_new2020_SAC_BHZ
+201304060442_new2020_SAC_BHT
+201304060442_new2020_SAC_BHR
+201212101653_new2020_SAC_BHZ
+201208261505_new2020_SAC_BHZ
+201208261505_new2020_SAC_BHT
+201208261505_new2020_SAC_BHR
+EOF
+
+cat<<EOF>dirlist_$$
+200910072141_new2020_SYNTHS/1D_prem/sacfiles_R
+200910072141_new2020_SYNTHS/1D_prem/sacfiles_T
+200910072141_new2020_SYNTHS/1D_prem/sacfiles_Z
+200910072141_new2020_SYNTHS/3D_GLADM15/sacfiles_R
+200910072141_new2020_SYNTHS/3D_GLADM15/sacfiles_T
+200910072141_new2020_SYNTHS/3D_GLADM15/sacfiles_Z
+200910072141_new2020_SYNTHS/3D_s40rts_1Dcrust/sacfiles_R
+200910072141_new2020_SYNTHS/3D_s40rts_1Dcrust/sacfiles_T
+200910072141_new2020_SYNTHS/3D_s40rts_1Dcrust/sacfiles_Z
+200910072141_new2020_SYNTHS/3D_s40rts/sacfiles_R
+200910072141_new2020_SYNTHS/3D_s40rts/sacfiles_T
+200910072141_new2020_SYNTHS/3D_s40rts/sacfiles_Z
+201109051755_new2020_SYNTHS/1D_prem_FR/sacfiles_R
+201109051755_new2020_SYNTHS/1D_prem_FR/sacfiles_T
+201109051755_new2020_SYNTHS/1D_prem_FR/sacfiles_Z
+201109051755_new2020_SYNTHS/1D_prem_noise/sacfiles_MXR
+201109051755_new2020_SYNTHS/1D_prem_noise_V2/sacfiles_MXR
+201109051755_new2020_SYNTHS/1D_prem_NR_onlyQ/sacfiles_R
+201109051755_new2020_SYNTHS/1D_prem_NR_onlyQ/sacfiles_T
+201109051755_new2020_SYNTHS/1D_prem_NR_onlyQ/sacfiles_Z
+201109051755_new2020_SYNTHS/1D_prem_NR/sacfiles_R
+201109051755_new2020_SYNTHS/1D_prem_NR/sacfiles_T
+201109051755_new2020_SYNTHS/1D_prem_NR/sacfiles_Z
+201109051755_new2020_SYNTHS/1D_prem/sacfiles_R
+201109051755_new2020_SYNTHS/1D_prem/sacfiles_T
+201109051755_new2020_SYNTHS/1D_prem/sacfiles_Z
+201109051755_new2020_SYNTHS/1D_prem_V2/sacfiles_R
+201109051755_new2020_SYNTHS/3D_GLADM15/sacfiles_R
+201109051755_new2020_SYNTHS/3D_GLADM15/sacfiles_T
+201109051755_new2020_SYNTHS/3D_GLADM15/sacfiles_Z
+201109051755_new2020_SYNTHS/3D_s40rts_1D_crust/sacfiles_R
+201109051755_new2020_SYNTHS/3D_s40rts_1D_crust/sacfiles_T
+201109051755_new2020_SYNTHS/3D_s40rts_1D_crust/sacfiles_Z
+201109051755_new2020_SYNTHS/3D_s40rts_FR/sacfiles_R
+201109051755_new2020_SYNTHS/3D_s40rts_FR/sacfiles_T
+201109051755_new2020_SYNTHS/3D_s40rts_FR/sacfiles_Z
+201109051755_new2020_SYNTHS/3D_s40rts_NR/sacfiles_R
+201109051755_new2020_SYNTHS/3D_s40rts_NR/sacfiles_T
+201109051755_new2020_SYNTHS/3D_s40rts_NR/sacfiles_Z
+201109051755_new2020_SYNTHS/3D_s40rts/sacfiles_R
+201109051755_new2020_SYNTHS/3D_s40rts/sacfiles_T
+201109051755_new2020_SYNTHS/3D_s40rts/sacfiles_Z
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_R
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_T
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_Z
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_R
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_T
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_Z
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_R
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_T
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_Z
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_R
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_T
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_Z
+EOF
+
+
+cat<<EOF>dirlist_$$
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_R
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_T
+Sevent000000_new2020_SYNTHS/1D_prem_NR/sacfiles_Z
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_R
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_T
+Sevent000000_new2020_SYNTHS/1D_prem/sacfiles_Z
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_R
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_T
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem_NR/sacfiles_Z
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_R
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_T
+SSI_Alaska/201812110226_new2020_SYNTHS/1D_prem/sacfiles_Z
+EOF
+
+cat<<EOF>dirlist_$$
+2013_new2020_SYNTHS/1D_prem_7s/sacfiles_R
+2013_new2020_SYNTHS/1D_prem_7s/sacfiles_T
+2013_new2020_SYNTHS/1D_prem_7s/sacfiles_Z
+2013_new2020_SYNTHS/1D_prem/sacfiles_R
+2013_new2020_SYNTHS/1D_prem/sacfiles_T
+2013_new2020_SYNTHS/1D_prem/sacfiles_Z
+2013_new2020_SYNTHS/3D_GLADM15/sacfiles_R
+2013_new2020_SYNTHS/3D_GLADM15/sacfiles_T
+2013_new2020_SYNTHS/3D_GLADM15/sacfiles_Z
+2013_new2020_SYNTHS/3D_s40rts_1dcrust/sacfiles_R
+2013_new2020_SYNTHS/3D_s40rts_1dcrust/sacfiles_T
+2013_new2020_SYNTHS/3D_s40rts_1dcrust/sacfiles_Z
+2013_new2020_SYNTHS/3D_s40rts_7s/sacfiles_R
+2013_new2020_SYNTHS/3D_s40rts_7s/sacfiles_T
+2013_new2020_SYNTHS/3D_s40rts_7s/sacfiles_Z
+2013_new2020_SYNTHS/3D_s40rts/sacfiles_R
+2013_new2020_SYNTHS/3D_s40rts/sacfiles_T
+2013_new2020_SYNTHS/3D_s40rts/sacfiles_Z
+EOF
+
+cat<<EOF>dirlist_$$
+201206230434_new2020_SAC_NewHilbRules_BHZ
+201109051755_new2020_SAC_NewHilbRules_BHZ
+201109051755_new2020_SAC_NewHilbRules_BHT
+200910072141_new2020_SAC_NewHilbRules_BHZ
+200910072141_new2020_SAC_NewHilbRules_BHT
+200910072141_new2020_SAC_NewHilbRules_BHR
+201206230434_new2020_SAC_NewHilbRules_BHT
+201206230434_new2020_SAC_NewHilbRules_BHR
+201109051755_new2020_SAC_NewHilbRules_BHR
+EOF
+
+
+
+
+
+cat<<EOF>dirlist_$$
+201007232251_new2022_SAC_BHR
+201007232251_new2022_SAC_BHT
+201007232251_new2022_SAC_BHZ
+201007240535_new2022_SAC_BHR
+201007240535_new2022_SAC_BHT
+201007240535_new2022_SAC_BHZ
+201108300657_new2022_SAC_BHR
+201108300657_new2022_SAC_BHT
+201108300657_new2022_SAC_BHZ
+201111080259_new2022_SAC_BHR
+201111080259_new2022_SAC_BHT
+201111080259_new2022_SAC_BHZ
+201201240052_new2022_SAC_BHR
+201201240052_new2022_SAC_BHT
+201201240052_new2022_SAC_BHZ
+201304260653_new2022_SAC_BHR
+201304260653_new2022_SAC_BHT
+201304260653_new2022_SAC_BHZ
+201305140032_new2022_SAC_BHR
+201305140032_new2022_SAC_BHT
+201305140032_new2022_SAC_BHZ
+201308120416_new2022_SAC_BHR
+201308120416_new2022_SAC_BHT
+201308120416_new2022_SAC_BHZ
+EOF
+
+cat<<EOF>dirlist_$$
+201003201400_new2022_SAC_BHT
+201003201400_new2022_SAC_BHR
+201003201400_new2022_SAC_BHZ
+201205262148_new2022_SAC_BHR
+201205262148_new2022_SAC_BHZ
+201205262148_new2022_SAC_BHT
+200708081705_new2022_SAC_BHZ
+200708081705_new2022_SAC_BHR
+200708081705_new2022_SAC_BHT
+201109151931_new2022_SAC_BHT
+201109151931_new2022_SAC_BHR
+201109151931_new2022_SAC_BHZ
+EOF
+
+cat<<EOF>dirlist_$$
+200708081704_new2022_SAC_BHZ
+200708081704_new2022_SAC_BHR
+200708081704_new2022_SAC_BHT
+EOF
+
+cat<<EOF>dirlist_$$
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_1Dcrust_5s/sacfiles_Z
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_1Dcrust_5s/sacfiles_T
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_1Dcrust_5s/sacfiles_R
+EOF
+
+cat<<EOF>dirlist_$$
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_T
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_R
+201109051755_new2020_SYNTHS/newRUN/3Ds40rts_Crust2.0_5s/sacfiles_Z
+EOF
+
+
+cat<<EOF>dirlist_$$
+201007290731_new2020_SAC_flipped_BHT
+201007290731_new2020_SAC_flipped_BHR
+201007290731_new2020_SAC_flipped_BHZ
+EOF
+
+cat<<EOF>dirlist_$$
+201112140504_new2020_AllPositivePolarity_SAC_BHR
+201112140504_new2020_AllPositivePolarity_SAC_BHT
+EOF
+
+cat<<EOF>dirlist_$$
+201109051755_new2020_SYNTHS/newRUN/prem_5s_2011_noflags_Atten_noise_v2/sacfiles_R
+EOF
+
+#cat<<EOF>dirlist_$$
+#200705191719_new2020_AllPositivePolarity_SAC_BHR  
+#200810122055_new2020_AllPositivePolarity_SAC_BHR
+#200909020755_new2020_AllPositivePolarity_SAC_BHR
+#201112140504_new2020_AllPositivePolarity_SAC_BHR
+#201208140259_new2020_AllPositivePolarity_SAC_BHR
+#201208261505_new2020_AllPositivePolarity_SAC_BHR
+#201212101653_new2020_AllPositivePolarity_SAC_BHR
+#201304200451_new2020_AllPositivePolarity_SAC_BHR
+#201308120053_new2020_AllPositivePolarity_SAC_BHR
+#201309011152_new2020_AllPositivePolarity_SAC_BHR
+#200705191719_new2020_AllPositivePolarity_SAC_BHT 
+#200810122055_new2020_AllPositivePolarity_SAC_BHT
+#200909020755_new2020_AllPositivePolarity_SAC_BHT
+#201112140504_new2020_AllPositivePolarity_SAC_BHT
+#201208140259_new2020_AllPositivePolarity_SAC_BHT
+#201208261505_new2020_AllPositivePolarity_SAC_BHT
+#201212101653_new2020_AllPositivePolarity_SAC_BHT
+#201304200451_new2020_AllPositivePolarity_SAC_BHT
+#201308120053_new2020_AllPositivePolarity_SAC_BHT
+#201309011152_new2020_AllPositivePolarity_SAC_BHT
+#EOF
+
+cat<<EOF>dirlist_$$
+201108241746_new2023_SAC_BHR
+201108241746_new2023_SAC_BHT
+201108241746_new2023_SAC_BHZ
+EOF
+
+#Loop start: loop over event directories
+#for dir in `cat dirlist_$$`; do
+while read dir; do
+cd $dir
+master_results_list=`ls "TA_SubArray_SmKS_Search_"*".dat" | head -n1`
+var=(`awk 'NR==1 {print $8, $9}' $master_results_list`)
+echo $dir ${var[*]}
+
+#while dir run_type; do
+
+
+echo dir $dir
+cd $dir
+pwd
+
+data_type=obs
+#data_type=synth
+run_type=new
+#========
+if [ $data_type == "obs" ]; then
+   eventdate=`echo $dir | cut -c1-12`
+   comp=`echo $dir | rev | cut -c1-3 | rev`
+   comp1=`echo $comp | cut -c3`
+elif [ $data_type == "synth" ]; then
+   eventdate=`echo $dir | cut -f1 -d"/"`
+   comp=`echo $dir | rev | cut -c1 | rev`
+   comp1=`echo $comp | cut -c1`
+fi
+echo eventdate $eventdate comp $comp comp1 $comp1
+
+#for phase in `echo SKS SKKS S3KS S4KS SKIKS SKScd Sdiff S PKS`; do
+for phase in `echo PcS`; do
+
+echo phase $phase
+#for phase in `echo S PKS`; do
+outpdf="SmKS_"$eventdate"_"$comp"_"$phase".pdf"
+echo outpdf $outpdf
+
+echo comp $comp phase $phase
+#master_results_list=`ls "TA_SubArray_SmKS_Search_"*"_"*"X"$comp"_"$phase".dat"`
+master_results_list=`ls "TA_SubArray_SmKS_Search_"*"_"*$comp"_"$phase".dat"`
+
+echo master_results_list $master_results_list
+pwd
+
+if [ -z $master_results_list ]; then
+	continue
+fi
+
+type=order
+if [ $type == "order" ]; then
+
+echo ===
+echo DIR $dir phase $phase
+pwd
+echo $master_results_list
+echo ===
+
+
+if [ `awk 'END {print NR}' $master_results_list` -eq 0 ]; then
+continue
+fi
+
+if [ $run_type == "new" ]; then
+   awk '{print $1, $9}' $master_results_list | sort -nk2 -nk1 | awk '!seen[$0]++' > namelist_$$
+elif [ $run_type == "old" ]; then
+   awk '{print $1, $8}' $master_results_list | sort -nk2 -nk1 | awk '!seen[$0]++' > namelist_$$
+fi
+
+psvar=()
+while read num basesta; do
+if [ $data_type == "obs" ]; then
+	psfile=`ls "Vespapack_"*"_0.02_0.25Hz_"*"samps_"$comp1"comp_"$basesta"base_gridnum"$num"_num"*"_"$phase"_"*"_RECORD.ps"`
+elif [ $data_type == "synth" ]; then
+        #psfile=`ls "Vespapack_"*"_0.02_0.083Hz_"*"samps_"$comp1"comp_"$basesta"base_gridnum"$num"_num"*"_"$phase"_"*"_RECORD.ps"`
+        psfile=`ls "Vespapack_"*"_0.02_0.25Hz_"*"samps_"$comp1"comp_"$basesta"base_gridnum"$num"_num"*"_"$phase"_"*"_RECORD.ps"`
+
+fi
+	pwd
+	echo comp1 $comp1 basesta $basesta num $num phase $phase
+	psvar=(${psvar[*]} $psfile)
+done < namelist_$$
+\rm namelist_$$
+
+echo ${psvar[*]}
+else
+	psvar=(`ls "Vespapack"*$phase".ps"`)
+fi
+
+#Depending on output size of PS file (in pixels*10)
+#gs -o $outpdf -g6120x7920 -sDEVICE=pdfwrite ${psvar[*]}
+gs -o $outpdf -g5950x8420 -sDEVICE=pdfwrite ${psvar[*]}             
+
+pwd
+echo phase $phase
+done
+
+#ONLY INCLUDE THIS IF YOU WANT ONE GIANT PDF OF ALL PS FILE (ALL PHASES FOR ONE EVENT)
+#psfiles=(`ls -t *RECORD.ps | tac`)
+#outpdf="SmKS_"$eventdate"_ALL.pdf"
+#gs -o $outpdf -g6120x7920 -sDEVICE=pdfwrite ${psfiles[*]}
+
+cd $home_dir
+#Loop end: loop over event directories
+#done
+
+done < dirlist_$$
+
+\rm dirlist_$$
+

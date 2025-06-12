@@ -1,0 +1,15 @@
+#! /bin/bash
+
+infile=Outfile_Ftrace.dat
+
+maxvar=(`sort -nrk4 $infile | awk 'NR==1 {print $0}'`)
+
+range="-R1100/1420/0/8"
+interp="-I1/0.25"
+frame="-JX15c/10c"
+awk -v maxvar1=${maxvar[0]} -v maxvar2=${maxvar[1]} '{if ($1==maxvar1) print $3, $2, $4}' $infile | gmt gmtinfo
+awk -v maxvar1=${maxvar[0]} -v maxvar2=${maxvar[1]} '{if ($1==maxvar1) print $3, $2, $4}' $infile | gmt surface $range $interp -Gout.grd
+
+gmt makecpt -Chot -T0/60/5 -I -Z > xf.cpt
+gmt grdimage out.grd $range $frame -B40:"Time (s)":/1:"Slow (s/deg)":WSen -Cxf.cpt > out.ps
+gv out.ps &

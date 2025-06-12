@@ -1,0 +1,46 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+
+#- aliases:
+# make these interactive by default:
+alias rm='rm -i'
+alias mv='mv -i'
+alias cp='cp -i'
+#-
+
+#- starta basic path
+export PATH=/opt/local/libexec/gnubin/:/opt/local/bin/:/usr/local/bin/:/bin:/sbin:/usr/bin:/usr/sbin:.
+
+#- Frost bins
+export PATH=$PATH:/Users/keyser/Documents/softies/SmKS-main/bin/
+
+#- Script paths:
+export PATH=$PATH:.:/Users/keyser/Documents/softies/SmKS-main/scriptsdir/
+
+#- gmt5
+export PATH=$PATH:/bin/gmt
+
+#- taup
+export TAUP_HOME=/opt/homebrew/bin/taup
+export PATH=$PATH:${TAUP_HOME}/bin
+
+# - for sac
+export PATH=$PATH:/usr/local/sac/bin 
+export SACDIR=/usr/local/sac
+export SACAUX=$SACDIR/aux
+export SACCFLAGS="-w -DBSD4.2 -DSUNOS4.0 -Bstatic"
+export SACFFLAGS="-w -Nn2000 -Nq300 -Bstatic"
+export SACPFLAGS="-P"
+export SACXWINDOWS=x11
+export SACSUNWINDOWS=sun
+export SACGRAPHICSDEVICE=xwindows
+export SACMSDIR=$SACDIR/macros
+# Set path to the SAC binaries ...
+export PATH=$PATH:$SACDIR/bin:$SACDIR/macros:$SACDIR/iaspei:$SACDIR/lib
+

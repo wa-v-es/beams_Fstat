@@ -1,0 +1,145 @@
+#! /bin/bash
+#Script to install SmKS_Package and its dependencies
+#Dan Frost
+#UC Berkeley
+#1.1.2021
+
+
+system_type=mac
+#system_type=other
+if [ $system_type == "mac" ]; then
+echo "YEP ON A MAC"
+alias sed='/opt/homebrew/bin/gsed'
+shopt -s expand_aliases
+fi
+
+#Move to location of SmKS_Package
+# Absolute path to this script
+packagedir=$(perl -e 'use File::Basename; use Cwd "abs_path"; print dirname(abs_path(@ARGV[0]));' -- "$0")
+cd $packagedir
+
+
+#-----
+#Directories
+if [ ! -d bin ]; then	mkdir bin; fi
+if [ ! -d temps ]; then	mkdir temps; fi
+if [ ! -d SmKS_monitoring ]; then	mkdir SmKS_monitoring; fi
+basedir=`pwd`
+bindir="BINDIR="$basedir"/bin/"
+sacpath="/usr/local/sac"    #CHANGE FOR INSTALL
+saclib="SACLIB="$sacpath"/lib/sacio.a"
+tauppath="/opt/homebrew/bin/taup"  #CHANGE FOR INSTALL
+scriptsdir=`echo $basedir/scriptsdir/`
+echo ADD THIS LINE TO YOUR .bashrc: "export PATH=\$PATH:"$scriptsdir
+echo ALSO ADD THIS LINE TO YOUR .bashrc: "export PATH=\$PATH:"$basedir"/bin/"
+
+
+##
+#-----
+#Programs
+pypath="/usr/bin/python3"               #CHANGE FOR INSTALL
+pydir=$basedir"/pythondir/"
+$pypath -m pip install pandas --user
+$pypath -m pip install geographiclib --user
+$pypath -m pip install numpy --user
+$pypath -m pip install scipy --user
+
+
+#-----
+#Install sac2xy
+tar -zxvf sac2xy.tar.gz
+cd sac2xy
+echo bindir $bindir
+sed -i "s@^BINDIR.*@$bindir@" makefile
+echo --
+cat makefile
+
+make clean
+make
+cd $basedir
+
+
+#-----
+#Install sachead
+tar -zxvf sachead.tar.gz
+cd sachead
+echo bindir $bindir
+sed -i "s@^BINDIR.*@$bindir@" makefile
+echo --
+cat makefile
+
+make clean
+make
+cd $basedir
+
+
+#-----
+#Install radiation_thaz
+tar -zxvf radiation_thaz.tar.gz
+cd radiation_thaz
+echo bindir $bindir
+sed -i -e "s@^BINDIR.*@$bindir@" makefile
+
+make clean
+make
+cd $basedir
+
+
+#-----
+#Install ftrace
+tar -zxvf  Ftrace_2020.tar.gz
+cd Ftrace_2020
+sed -i "s@^BINDIR.*@$bindir@" Makefile
+sed -i "s@^SACLIB.*@$saclib@" Makefile
+
+make clean
+make
+cd $basedir
+
+
+#-----
+#Install fpack
+tar -zxvf  Fpack_2020.tar.gz
+cd Fpack_2020
+sed -i "s@^BINDIR.*@$bindir@" Makefile
+sed -i "s@^SACLIB.*@$saclib@" Makefile
+
+make clean
+make
+cd $basedir
+
+
+#------
+#Prepare MWE_bashrc
+sed -i "s@smkspath@$basedir@" MWE_bashrc
+sed -i "s@sacpath@$sacpath@" MWE_bashrc
+sed -i "s@tauppath@$tauppath@" MWE_bashrc
+
+
+#------
+#Prepare scripts
+cd scriptsdir
+
+sed -i "s@^home_dir\=.*@home_dir\=$basedir@" SmKS_TALooper_2020.bsh
+sed -i -e "s@py3\=.*@py3\=$pypath@" SmKS_TALooper_2020.bsh
+sed -i -e "s@pydir\=.*@pydir\=$pydir@" SmKS_TALooper_2020.bsh
+
+
+sed -i "s@home_dir\=.*@home_dir\=$basedir@" SmKS_subarray_positions.bsh
+sed -i "s@home_dir\=.*@home_dir\=$basedir@" SAC_event_copy.bsh
+sed -i "s@home_dir\=.*@home_dir\=$basedir@" SmKS_event_run_looper_2020.bsh
+sed -i "s@home_dir\=.*@home_dir\=$basedir@" SmKS_PDFpacker_2020.bsh
+sed -i "s@home_dir\=.*@home_dir\=$basedir@" SmKS_sac2mseed.bsh
+
+
+if [ $system_type == "mac" ]; then
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SmKS_TALooper_2020.bsh
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SmKS_Vespapack_2020.bsh
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SmKS_Record_Plot_2020.bsh
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SAC_event_copy.bsh
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SmKS_plot_3comp.bsh
+sed -i "5a alias sed='/opt/homebrew/bin/gsed'\nshopt -s expand_aliases" SmKS_sac2mseed.bsh
+fi
+cd $basedir
+echo --
+echo "Done!"

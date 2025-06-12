@@ -1,0 +1,9 @@
+-0.75 -3 10 0 0 LT Origin: 2009 10 07 21:41
+-0.75 -2 10 0 0 LT ArrCen la/lo/stnm:30.33 -103.22 Nst:13
+-0.75 -1 10 0 0 LT ArrBase: 528A, grid 30, -103
+-0.75 0 10 0 0 LT Event la/lo/dp: 4.09 122.54 586.80 Mb:6.8
+-0.75 1 10 0 0 LT Dist: 124.7 Baz (Arr-Evt): -59.8
+-0.75 2 10 0 0 LT Frequencies: 0.04 - 0.5 Hz  
+-0.75 3 10 0 1 LT Traces SNR mean, std: 324.93, 1452.49, -230.22 5153.54
+-0.75 4 10 0 1 LT Pred SKKS (prem) time/U: 1543.17 6.360
+-0.75 5 10 0 1 LT Pick time(beam)/U/Bz (XF): 1549.45 6.00  -4.00 Beam SNR 19.07

@@ -1,0 +1,24 @@
+15
+-180 20 180
+0.0 0.5 8.0
+34.5 -83.3
+-7.330800 120.0106
+sacfile_V49A.BHR.Q2SAC.sac
+sacfile_V50A.BHR.Q2SAC.sac
+sacfile_V51A.BHR.Q2SAC.sac
+sacfile_W49A.BHR.Q2SAC.sac
+sacfile_W51A.BHR.Q2SAC.sac
+sacfile_W52A.BHR.Q2SAC.sac
+sacfile_X51A.BHR.Q2SAC.sac
+sacfile_X52A.BHR.Q2SAC.sac
+sacfile_X53A.BHR.Q2SAC.sac
+sacfile_Y49A.BHR.Q2SAC.sac
+sacfile_Y51A.BHR.Q2SAC.sac
+sacfile_Y52A.BHR.Q2SAC.sac
+sacfile_Y53A.BHR.Q2SAC.sac
+sacfile_Z51A.BHR.Q2SAC.sac
+sacfile_Z52A.BHR.Q2SAC.sac
+60 0.05 0.5 2 4.0
+Outfile_Ftrace.dat
+1100 -47
+Y N 0.0 N 1

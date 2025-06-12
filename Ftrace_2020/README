@@ -1,0 +1,84 @@
+#Ftrace code
+
+#-------
+#ACKNOWLEDGEMENTS
+#Originally writte by David Bowers of AWE Blacknest (29/6/2005)
+#Since modified by Dan A. Frost of UC Berkeley (2010-2020)
+#Converted from F77 to F90 using converter by Alan Miller
+
+
+#-------
+#COMPILATION
+#Change saclib and bin directories in makefile
+
+#To compile run:
+make
+
+#Warnings that will likely show (totally normal, don't panic) ---
+gfortran -finit-local-zero -fno-automatic -O3 -c beta_as63.f90
+gfortran -finit-local-zero -fno-automatic -O3 -c geodesic.f90
+geodesic.f90:1914:30:
+
+ 1911 |       do 10 k = n2, 1, -2
+      |                         2     
+......
+ 1914 |         y0 = ar * y1 - y0 + c(k-1)
+      |                              1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2)
+gfortran -finit-local-zero -fno-automatic -O3 -o ftrace_rnorm_tau_tmin_circ_elv_f90 main_rnorm_tau_tmin_circ_elv.f90 geodesic.f90 beta_as63.f90 fstuff.f90 recbut.f90 shift.f90 dcool.f90 ctaper.f90 linreg_sub.f90 /Users/dafrost/Work/Programs/sac/lib/sacio.a
+geodesic.f90:1914:30:
+
+ 1911 |       do 10 k = n2, 1, -2
+      |                         2     
+......
+ 1914 |         y0 = ar * y1 - y0 + c(k-1)
+      |                              1
+Warning: Array reference at (1) out of bounds (0 < 1) in loop beginning at (2)
+#----
+
+
+#-------
+#RUNNING
+#To run call:
+ftrace_rnorm_tau_tmin_circ_elv_f90 < FTR_INP
+
+
+#-------
+#INPUT FILE: FTR_INP  --- for use with: ftrace_rnorm_tau_tmin_circ_elv_f90
+
+15 -45.7 19.15                 : Number of traces, back-azimuth, slowness in s/km (=111.1/slowness in s/deg)
+34.5 -83.3                     : Beam point lat, lon
+-7.330800 120.0106	       : Event lat, lon
+sacfile_V49A.BHR.Q2SAC.sac     : List of traces to read
+sacfile_V50A.BHR.Q2SAC.sac
+sacfile_V51A.BHR.Q2SAC.sac
+sacfile_W49A.BHR.Q2SAC.sac
+sacfile_W51A.BHR.Q2SAC.sac
+sacfile_W52A.BHR.Q2SAC.sac
+sacfile_X51A.BHR.Q2SAC.sac
+sacfile_X52A.BHR.Q2SAC.sac
+sacfile_X53A.BHR.Q2SAC.sac
+sacfile_Y49A.BHR.Q2SAC.sac
+sacfile_Y51A.BHR.Q2SAC.sac
+sacfile_Y52A.BHR.Q2SAC.sac
+sacfile_Y53A.BHR.Q2SAC.sac
+sacfile_Z51A.BHR.Q2SAC.sac
+sacfile_Z52A.BHR.Q2SAC.sac
+60 0.05 0.5 2 4.0              : Ftrace time window, BP_fmin, BP_fmax, Npoles, Probability
+0                              : Time shift for beams added to the beam times written out. Set to 0 if input traces have absolute time, or else set to start time if traces have relative time
+Sign of radiation pattern (either 1 or -1)
+Y N 0.0 N 1 	  	       : Circ-wave (Y) or Plane-wave (N), Station elevation correction (Y/N), Station elev. corr. velocity in km (FLOAT), Normalise to RadPat sign (Y) or Normalise to trace absolute max, Radpat sign (only used if prior value is 1. INTEGER)
+
+
+#-------
+#OUTPUTS
+Generates files: beam.sac, filt.sac, xf.sac, semb.sac, xp.sac, tau.output
+
+beam.sac   : linear beam of traces formed on given slowness and back-azimuth
+filt.sac   : linear beam of traces formed on given slowness and back-azimuth, filtered with bandpass limits given
+xf.sac     : f-trace of beam
+semb.sac   : semblance
+xp.sac     : probability trace. Probability (using the F-statistic) that a signal is present above bandlimited noise, with SNR equal to sqrt(signal/noise power) (see Douze and Laster, 1979. Geophysics. 44, pp.1999 and Blandford, 1974. Geophysics. 39, pp.633)
+tau.output : list of the timeshifts used to align on given slowness and back-azimuth
+
+Examples are given in "Example_outputs/" directory

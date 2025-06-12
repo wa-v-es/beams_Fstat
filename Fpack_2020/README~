@@ -1,0 +1,63 @@
+#Fpack_F90
+
+#-------
+#ACKNOWLEDGEMENTS
+#Originally writte by David Bowers of AWE Blacknest (29/6/2005)
+#Since modified by Dan A. Frost of UC Berkeley (2010-2020)
+#Converted from F77 to F90 using converter by Alan Miller
+
+#-------
+#COMPILATION
+#Change saclib and bin directories in makefile
+
+#To compile standard version run:
+make
+
+#-------
+#RUNNING
+#To run call:
+ftrace_norm_tau_f90 < FTR_INP
+
+#-------
+#INPUT FILE: FTR_INP
+
+
+Input file example: FTR_INP
+15                              - Number of traces           
+-180 20 180		        - Baz (deg): min, step, max (integers)
+0.0 0.2 8.0		        - Slow (s/deg): min, step, max (floating point)
+34.5 -83.3    	   		- Array Lat, Lon
+-7.330800 120.0106	        - Event lat, lon
+sacfile_V49A.BHR.Q2SAC.sac      - List of traces to read
+sacfile_V50A.BHR.Q2SAC.sac
+sacfile_V51A.BHR.Q2SAC.sac
+sacfile_W49A.BHR.Q2SAC.sac
+sacfile_W51A.BHR.Q2SAC.sac
+sacfile_W52A.BHR.Q2SAC.sac
+sacfile_X51A.BHR.Q2SAC.sac
+sacfile_X52A.BHR.Q2SAC.sac
+sacfile_X53A.BHR.Q2SAC.sac
+sacfile_Y49A.BHR.Q2SAC.sac
+sacfile_Y51A.BHR.Q2SAC.sac
+sacfile_Y52A.BHR.Q2SAC.sac
+sacfile_Y53A.BHR.Q2SAC.sac
+sacfile_Z51A.BHR.Q2SAC.sac
+sacfile_Z52A.BHR.Q2SAC.sac
+60 0.05 0.5 2 4.0                - Sampling rate (samp/s), fil min (Hz), fil max (hH), poles, SNR cut off (for semblance)
+Outfile_Ftrace.dat               - Output file for data
+1100 -47                         - Min time of sac traces (adds this value to time column of output data), GCP back azimuth (output back azimuth calculate relative to GCP)
+Y N 0.0 N 1                      - Circ-wave (Y) or Plane-wave (N), Station elevation correction (Y/N), Station elev. corr. velocity in km (FLOAT), Normalise to RadPat sign (Y) or Normalise to trace absolute max, Radpat sign (only used if prior value is 1. INTEGER)
+
+
+Output file example:
+Relative back-azimuth, slowness, time, F amp, Filt beam amp, absolute back-azimuth
+ -180  0.00 1100.00        0.0000000000        0.0000000000  133
+ -180  0.00 1100.10        0.0000000000        0.0442700014  133
+ -180  0.00 1100.20        0.0000000000        0.0399460420  133
+ -180  0.00 1100.30        0.0000000000        0.0341160297  133
+ -180  0.00 1100.40        0.0000000000        0.0275796112  133
+ -180  0.00 1100.50        0.0000000000        0.0209117495  133
+ -180  0.00 1100.60        3.1906213760        0.0144908028  133
+ -180  0.00 1100.70        2.2147145271        0.0085333697  133
+ -180  0.00 1100.80        1.3626942635        0.0031316893  133
+ -180  0.00 1100.90        0.8370480537       -0.0017096319  133
