@@ -408,8 +408,8 @@ elif [ $phase == "S" ]; then
     slow_min=7.0; slow_max=16.0
 elif [ $phase == "PKS" ]; then
     phasePRED=(${PKS[*]})
-elif [ $phase == "PcS" ]; then
-    phasePRED=(${PcS[*]})
+elif [ $phase == "P" ]; then
+    phasePRED=(${Pwave[*]})
 elif [ $phase == "PP" ]; then
       phasePRED=(${PP[*]})
 fi
@@ -428,8 +428,7 @@ fi
 #CHECK FOR DEPTH PHASE CONTAMINATION
 contamrange=10; contval=NOCONT
 cat<<EOF>contam_list_$$
-lpPwave
-lpPP
+Sdiff
 EOF
 sed -i "/^$phase/d" contam_list_$$
 for phasen in `cat contam_list_$$`; do
@@ -456,7 +455,7 @@ echo phase $phase phasepred ${phasePRED[*]}
 cutmin=`echo ${Pwave[0]} | awk '{print $1-30}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
-cutmax=`echo ${phasePRED[0]} | awk '{print $1+50}'`
+cutmax=`echo ${phasePRED[0]} | awk '{print $1+100}'`
 
 echo -- TIME WINDOW FOR CALCULATION --
 echo cutmin $cutmin cutmax $cutmax
@@ -612,7 +611,7 @@ q
 EOF
 
 
-noi_wid=20
+noi_wid=5 #was 20
 ph_half_wid=15
 for sacfile in `ls *$sackey`; do
     gcarc=`sachead $sacfile gcarc | awk '{print $2}'`
@@ -761,7 +760,7 @@ cat FTR_INP
 echo -- Run Fpack --
 $fpack_dir"fpack_rnorm_tmin_circ_elv_f90" < FTR_INP
 cp FTR_INP FTR_INP_fpack
-
+# exit
 
 #PRINT OUT RESULTS TO INDIVIDUAL FILES
 #sort -nr -k4 $FINALMAXFILE: Sorts the file numerically in reverse order based on the 4th column.

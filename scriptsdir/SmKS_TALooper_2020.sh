@@ -31,7 +31,7 @@ shopt -s expand_aliases
 
 #SmKS_TALooper_2020.sh 1 Z AK_whole obs
 #SmKS_TALooper_2020.sh 1 Z TA_2012 obs
-
+#SmKS_TALooper_2020.sh 1 Z Plume_1 synth
 # SmKS_TALooper_2020.sh 81 Z AK_whole synth
 #=============
 #Codes needed:
@@ -85,9 +85,9 @@ datatype=${4-obs}
 #####
 # use this to run all folders in sac_files
 #
-for folder in 1*/; do # for TA..
+# for folder in 1*/; do # for TA..
 # for folder in `ls`; do
-cd $folder
+# cd $folder
 
 mkdir grid_folder
 mkdir xyz_folder
@@ -261,9 +261,9 @@ fi
 
 #TO REMOVE - when ready to run all phaes, add comments/delete the writing of "Input_Phase_List_"$$  below
 cat<<EOF>$work"Input_Phase_List_"$$
-PP PP 60 130
+P P 40 90
 EOF
-
+#PP PP 60 130
 phase_list=(`awk '{print $1}' $work"Input_Phase_List_"$$`)
 taupphase_list=(`awk '{print $2}' $work"Input_Phase_List_"$$`)
 
@@ -276,7 +276,7 @@ lim_upper_ALL=`awk '{print $4}' $work"Input_Phase_List_"$$ | sort -nrk1 | awk 'N
 #Fpack Options
 #===========
 DO_CIRC=Y #Circular wave (Y)/Plane wave (N)
-DO_ELEV=Y #Station elevation correction (Y/N) - Applys a correction for the differential station heights in Fpack and Ftrace.
+DO_ELEV=N #Station elevation correction (Y/N) - Applys a correction for the differential station heights in Fpack and Ftrace.
 #Uses crustal velocity of 3kms-1. Assumes vertical wave propagation, i.e. uses only elevation, not elevation and incidence angle.
 elev_vel=3.0 #Velocity for elevation correction
 DO_RADPAT=Y #Normalise to radpat (Y/N)
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.02; fmax=0.5; delta=60
+    fmin=0.05; fmax=0.5; delta=60
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -315,6 +315,10 @@ if [ $region == "ILAR" ]; then
 elif [ $region == "AlSub" ]; then
       grid_lat_min=63; grid_lat_max=66        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=-150; grid_lon_max=-144   #Range of lons to search and form subarrays
+
+elif [ $region == "Plume_1" ]; then
+      grid_lat_min=-15; grid_lat_max=15        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=3; grid_lon_max=15   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -371,7 +375,7 @@ grid_inc=2  #Increment for grid spacing (in degrees)
 #===========
 #Subarray Options
 #===========
-number_min=14 #Minimum desired number of stations
+number_min=10 #Minimum desired number of stations
 number_max=75 #Maximum desired number of stations
 
 gridsize=7 # for grid station arrangement
@@ -873,7 +877,7 @@ echo ----------------------------
 
 # bit for all folders in sac_files
 mv -f *RECORD.jpg xf_beam_record/
-cd ../
+# cd ../
 done
 ##
 echo ----------------------------
