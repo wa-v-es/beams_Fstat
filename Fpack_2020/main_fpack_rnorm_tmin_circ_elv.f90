@@ -85,7 +85,7 @@ real (kind=8) :: az_geod,dum1,dum2,dum3,dum4,dum5,dum6,dum7
 integer :: dumo
 integer :: masko,radpat_updo
 real maxnum,minnum
-parameter(a_geod=6356774.719,f_geod=1/298.25) !Australia ellipsoid used in george! 
+parameter(a_geod=6356774.719,f_geod=1/298.25) !Australia ellipsoid used in george!
 !parameter(a_geod=6356752.3142,f_geod=1/298.257223563)
 parameter(masko=1)
 COMPLEX*16 w
@@ -145,7 +145,7 @@ call invers(a_geod,f_geod,dble(elat),dble(elon),dble(clat),dble(clon),cdist,az_c
 
 !     Prepare output file
 !     relbaz, u_val, time, filt, fst baz
-      form="(I5 F6.2 F8.2 F20.10 F20.10 I5)"
+      form="(I5, F6.2, F8.2, F20.10, F20.10, I5)"
 
       open(3,file=fileout,status='replace')
 
@@ -242,7 +242,7 @@ do 102 uloop_val = uloop_min,uloop_max,uloop_inc
    u_val=u_min+(u_inc*uloop_val)
    if (u_val.eq.0.0) then
       pvel=111.1/0.001
-   else 
+   else
       pvel=111.1/u_val
    endif
 
@@ -263,8 +263,8 @@ DO i = 1,m
    DO j = 1,npts
       array(j)=array_all(i,j)
    END DO
-   
-  
+
+
   !CIRCULAR WAVE FRONT
   IF ( DO_CIRC == "Y" ) THEN
   call invers(a_geod,f_geod,dble(lat(i)),dble(lon(i)),dble(elat),dble(elon),ddist(i),az_geod(i),daz(i)&
@@ -272,7 +272,7 @@ DO i = 1,m
 !!  write(*,*) "invers in",lat(i),lon(i),elat,elon,"out",ddist(i),az_geod(i)
   dist_rel=ddist(i)-cdist
 !!  write(*,*) ddist(i),cdist,dist_rel
-  IF ( DO_ELV == "Y" ) THEN 
+  IF ( DO_ELV == "Y" ) THEN
      elv(i)=elv(i)/1000
      tau(i) = (dist_rel)/pvel - elv(i)/elv_vel
   ELSE
@@ -292,7 +292,7 @@ DO i = 1,m
   x(i) = dist(i) * SIN(ang)
   y(i) = dist(i) * COS(ang)
 
-  IF ( DO_ELV == "Y" ) THEN 
+  IF ( DO_ELV == "Y" ) THEN
      elv(i)=elv(i)/1000
      tau(i) = ((-x(i) * skx) - (y(i) * sky)) - elv(i)/elv_vel
   ELSE
@@ -305,7 +305,7 @@ DO i = 1,m
 !  91 FORMAT('Station, Tau: ',2(A,1f11.5))
 
 
-  
+
 
 ! remove linear trend, 1% cosine taper, time shift and load into data array
   DO ii = 1,npts
@@ -327,22 +327,22 @@ DO i = 1,m
 ! dimensionless units for tau
   tau(i) = tau(i) / del
 
-  
+
 ! calculation of npts2 for shift routine
-  
+
   an2 = ALOG10(real(npts-1))/ALOG10(2.0)
   n2 = INT(an2) + 1
   npts2 = 2**n2
   nhalf = npts2/2 + 1
- 
-!!DEBUG - Write out array 
+
+!!DEBUG - Write out array
 !DO ii = 1,npts
 !write(*,*) 'array',array(ii)
 !END DO
 
   CALL shift(npts,array,npts2,tau(i),w)
 
-!!DEBUG - Write out shifted array 
+!!DEBUG - Write out shifted array
 !DO ii = 1,npts
 !write(*,*) 'array',array(ii)
 !END DO
@@ -447,7 +447,7 @@ CALL fstuff(m,spts,snr,hf,lf,npts,narr,MAX,del,DATA,semb,fst,prob)
 
 ! cosine taper and write out semblance, F, probability
 
-write(3,form) (rel_baz, u_val, ((j-1)*del)+tmin, fst(j), filt(j), baz, j=1, npts, 10)  
+write(3,form) (rel_baz, u_val, ((j-1)*del)+tmin, fst(j), filt(j), baz, j=1, npts, 10)
 
  102  continue
 
