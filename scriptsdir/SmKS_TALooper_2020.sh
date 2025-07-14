@@ -263,7 +263,7 @@ fi
 cat<<EOF>$work"Input_Phase_List_"$$
 P P 40 90
 EOF
-#PP PP 60 130
+#PP PP 60 130 P P 40 90
 phase_list=(`awk '{print $1}' $work"Input_Phase_List_"$$`)
 taupphase_list=(`awk '{print $2}' $work"Input_Phase_List_"$$`)
 
@@ -275,18 +275,18 @@ lim_upper_ALL=`awk '{print $4}' $work"Input_Phase_List_"$$ | sort -nrk1 | awk 'N
 #===========
 #Fpack Options
 #===========
-DO_CIRC=Y #Circular wave (Y)/Plane wave (N)
+DO_CIRC=N #Circular wave (Y)/Plane wave (N)
 DO_ELEV=N #Station elevation correction (Y/N) - Applys a correction for the differential station heights in Fpack and Ftrace.
 #Uses crustal velocity of 3kms-1. Assumes vertical wave propagation, i.e. uses only elevation, not elevation and incidence angle.
 elev_vel=3.0 #Velocity for elevation correction
-DO_RADPAT=Y #Normalise to radpat (Y/N)
+DO_RADPAT=N #Normalise to radpat (Y/N)
 
 #SLOWNESS AND BACK-AZIMUTH LIMITS AND INCREMENTS FOR VESPAPACK
 #SLOWNESS VALUES CAN BE FLOATS, BACK-AZIMUTH HAS TO BE INTEGERS
 gridtype=test
 # gridtype=full
 if [ $gridtype == "test" ]; then
-  slo_min=0.0; slo_inc=.5; slo_max=10.0
+  slo_min=1.0; slo_inc=.5; slo_max=10.0
   baz_min=-50; baz_inc=2; baz_max=50
 elif [ $gridtype == "full" ]; then
   slo_min=0; slo_inc=0.25; slo_max=10.0
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=0.5; delta=60
+    fmin=0.05; fmax=0.5; delta=100
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
