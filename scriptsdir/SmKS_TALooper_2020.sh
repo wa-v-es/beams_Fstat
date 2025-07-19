@@ -261,7 +261,7 @@ fi
 
 #TO REMOVE - when ready to run all phaes, add comments/delete the writing of "Input_Phase_List_"$$  below
 cat<<EOF>$work"Input_Phase_List_"$$
-P P 40 90
+P P 40 95
 EOF
 #PP PP 60 130 P P 40 90
 phase_list=(`awk '{print $1}' $work"Input_Phase_List_"$$`)
@@ -286,8 +286,8 @@ DO_RADPAT=N #Normalise to radpat (Y/N)
 gridtype=test
 # gridtype=full
 if [ $gridtype == "test" ]; then
-  slo_min=1.0; slo_inc=.5; slo_max=10.0
-  baz_min=-50; baz_inc=2; baz_max=50
+  slo_min=1.0; slo_inc=.25; slo_max=10.0
+  baz_min=-40; baz_inc=2; baz_max=40
 elif [ $gridtype == "full" ]; then
   slo_min=0; slo_inc=0.25; slo_max=10.0
   baz_min=-50; baz_inc=1; baz_max=50
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=0.5; delta=100
+    fmin=0.01; fmax=0.05; delta=60
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -317,8 +317,8 @@ elif [ $region == "AlSub" ]; then
       grid_lon_min=-150; grid_lon_max=-144   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_1" ]; then
-      grid_lat_min=-15; grid_lat_max=15        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=3; grid_lon_max=15   #Range of lons to search and form subarrays
+      grid_lat_min=-17; grid_lat_max=17        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=2; grid_lon_max=17   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -375,7 +375,7 @@ grid_inc=2  #Increment for grid spacing (in degrees)
 #===========
 #Subarray Options
 #===========
-number_min=10 #Minimum desired number of stations
+number_min=12 #Minimum desired number of stations
 number_max=75 #Maximum desired number of stations
 
 gridsize=7 # for grid station arrangement
@@ -878,7 +878,7 @@ echo ----------------------------
 # bit for all folders in sac_files
 mv -f *RECORD.jpg xf_beam_record/
 # cd ../
-done
+#done
 ##
 echo ----------------------------
 echo COMPLETED ALL EQs

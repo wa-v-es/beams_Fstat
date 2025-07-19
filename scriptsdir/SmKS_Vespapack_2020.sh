@@ -357,10 +357,10 @@ echo Pwave ${Pwave[*]}
 echo PP ${PP[*]}
 echo PPP ${PPP[*]}
 echo pP ${lpPwave[*]}
-echo lpPP ${pPP[*]}
+echo S ${Swave[*]}
 echo sP ${sPwave[*]}
-echo PKiKP ${PKiKP[*]}
-echo sPdiff ${sPdiff[*]}
+#echo PKiKP ${PKiKP[*]}
+#echo sPdiff ${sPdiff[*]}
 
 
 # echo SKScd ${SKScd[*]}
@@ -380,7 +380,8 @@ echo sPdiff ${sPdiff[*]}
 cat<<EOF> $temps"phases_direct_plot_"$$
 ${Pwave[0]} ${Pwave[1]} 0 ${Pwave[2]}
 ${PP[0]} ${PP[1]} 0 ${PP[2]}
-${PPP[0]} ${PPP[1]} 0 ${PPP[2]}
+${Swave[0]} ${Swave[1]} 0 ${Swave[2]}
+${sP[0]} ${sP[1]} 0 ${sP[2]}
 EOF
 
 #Print to files for plotting later
@@ -452,10 +453,10 @@ echo phase $phase phasepred ${phasePRED[*]}
 # if [ -z ${Pwave[0]} ]; then
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-250}'`
 # else
-cutmin=`echo ${Pwave[0]} | awk '{print $1-30}'`
+cutmin=`echo ${Pwave[0]} | awk '{print $1-40}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
-cutmax=`echo ${phasePRED[0]} | awk '{print $1+100}'`
+cutmax=`echo ${Swave[0]} | awk '{print $1+40}'`
 
 echo -- TIME WINDOW FOR CALCULATION --
 echo cutmin $cutmin cutmax $cutmax
@@ -810,13 +811,13 @@ echo ---
 #Use time and slowness to identify back-azimuth of maximum Beam
 #PRINTS: time, slow, beam, rel_baz
 beam_max_WHOLE=(`awk '$3=='${beam_max_WHOLE[0]}' && $2=='${beam_max_WHOLE[1]}'' $FINALMAXFILE | awk '{print $1, $2, $3, $4, sqrt($5**2), $5, $6}' | sort -nrk5 | awk 'NR==1 {printf "%7.2f %4.2f %11.9f %7.2f", $3, $2, $6, $1}'`)
-DEBUG echo beam_max_WHOLE ${beam_max_WHOLE[*]}
+echo beam_max_WHOLE ${beam_max_WHOLE[*]}
 #DEBUG sort -nr -k4 $FINALMAXFILE | head -n1 | awk '{printf "%12.9f %12.9f %12.9f %14.12f\n", $3, $2, $5, $1}'
 
 #Maximum in whole plot
 xy_max_WHOLE=(`awk '$1>='$plotcutmin' && $1<='$plotcutmax'' $xf_slow_xyz | sort -nrk3,4 | head -n1`)
 xy_max_WHOLE=(`printf "%7.2f %4.2f %6.2f" ${xy_max_WHOLE[0]} ${xy_max_WHOLE[1]} ${xy_max_WHOLE[2]}`)
-DEBUG echo xy_max_WHOLE ${xy_max_WHOLE[*]}
+echo xy_max_WHOLE ${xy_max_WHOLE[*]}
 
 #--------------------
 
@@ -839,6 +840,7 @@ SKScd 10 10 8 8
 SKIKS 10 10 6 6
 Sdiff 10 10 8 8
 PP 10 10 8 8
+P 4 8 4 8
 EOF
 
 timeranges=(`awk -v phase=$phase '$1==phase {print $2, $3, $4, $5}' CONT_TIME_LIST_$$`)
@@ -1650,7 +1652,7 @@ awk -v tmin=${filttime_minmax[0]} -v tmax=${filttime_minmax[1]} '$1>(tmin+10) &&
 awk -v tmin=${filttime_minmax[0]} -v tmax=${filttime_minmax[1]} '$1>(tmin+10) && $1<(tmax-10) {print $1, '$dist'+.38, ($3/'$vmax')}' xf_max.xy | gmt pswiggle $sac_range $sac_frame -Z$sac_scale_y_dbl -W0.02c,darkgreen -O -K >> $outps
 echo 10.75 $dist FTRACE | awk '{print $1, $2+.38, $3}' | gmt pstext $sac_range_text $sac_frame -F+jLM+a0+f6,1,darkgreen -N -O -K >> $outps
 
-
+echo check check 1
 vmax=`awk -v tmin=${filttime_minmax[0]} -v tmax=${filttime_minmax[1]} '$1>(tmin+10) && $1<=(tmax-10)' filt_dif_max.xy | gmt gmtinfo -C | awk '{if (($5*$5)>($6*$6)) print $5*-1; else if (($5*$5)<($6*$6)) print $6}'`
 # awk -v tmin=${filttime_minmax[0]} -v tmax=${filttime_minmax[1]} '$1>(tmin+10) && $1<(tmax-10) {print $1, '$dist'-.2, ($3/'$vmax')}' filt_dif_max.xy | gmt pswiggle $sac_range $sac_frame -Z$sac_scale_y_dbl -W0.025c,purple -O -K >> $outps
 # echo 10.75 $dist BEAMDIF | awk '{print $1, $2-.2, $3}' | gmt pstext $sac_range_text $sac_frame -F+jLM+a0+f6,1,purple -N -O -K >> $outps
@@ -1665,17 +1667,17 @@ if [ $amplow == "LOW_AMP" ]; then
 echo 9.75 $dist | gmt psxy $sac_range_text $sac_frame -Sc0.4c -Gred -O -K >> $outps
 fi
 
-gmt psbasemap $sac_range $sac_frame -B -O >> $outps
+gmt psbasemap $sac_range $sac_frame -B -K -O >> $outps
 #-----------D
 
-
-SmKS_Record_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
+echo check check 2
+#SmKS_Record_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
 echo SmKS_Record_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
 
-SmKS_BeamRecord_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
+#SmKS_BeamRecord_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
 echo SmKS_BeamRecord_Plot_2020.sh $plotcutmin $plotcutmax $numtraces $sackey ${beamdif_onset_trc_phase[0]} ${beamdif_onset_trc_phase[1]} $phase ${phasePRED[0]} ${phasePRED[1]} $dist $outps $grid_num $basestation $proc_id $amplow $xf_grid_max $grid_lat $grid_lon
 
-
+echo check check 3
 #echo ${beamdif_onset_trc_phase[0]} ${xf_max_xyz_phase[1]}
 #WRITE OUT RESULTS
 echo ==
@@ -1701,7 +1703,7 @@ printf "%3d %s %9.4f %9.4f %7.2f %s %9.4f %9.4f %5s %s %9.4f %9.4f %s %9.4f %9.4
 
 
 #gv $outps &
-gmt ps2raster -A -Tj -E720 -P -Z -Vq *.ps
+gmt ps2raster -Tj -E720 -P -Z -Vq *.ps
 echo $outps
 
 

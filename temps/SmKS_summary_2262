@@ -1,8 +1,0 @@
-11 -0.2 16 0 1 RM Phase: PP Comp: Z
-11 1.0 14 0 1 RM Gridnum#:30 BPPC
-11 2.0 14 0 1 RM BeamDist:75.5
-11 3.0 14 0 1 RM Amp: -0.98 PN:-1 SAME
-11 4.0 14 0 1 RM Resid time/slow/baz:
-11 5.0 14 0 1 RM -3.02 s, -0.99 s/dg 15.00 dg
-11 6.0 14 0 1 RM SNR beam:  5.01
-11 7.0 14 0 1 RM NOCONT
