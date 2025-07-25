@@ -261,7 +261,7 @@ fi
 
 #TO REMOVE - when ready to run all phaes, add comments/delete the writing of "Input_Phase_List_"$$  below
 cat<<EOF>$work"Input_Phase_List_"$$
-P P 40 95
+P P 22 95
 EOF
 #PP PP 60 130 P P 40 90
 phase_list=(`awk '{print $1}' $work"Input_Phase_List_"$$`)
@@ -275,7 +275,7 @@ lim_upper_ALL=`awk '{print $4}' $work"Input_Phase_List_"$$ | sort -nrk1 | awk 'N
 #===========
 #Fpack Options
 #===========
-DO_CIRC=N #Circular wave (Y)/Plane wave (N)
+DO_CIRC=Y #Circular wave (Y)/Plane wave (N)
 DO_ELEV=N #Station elevation correction (Y/N) - Applys a correction for the differential station heights in Fpack and Ftrace.
 #Uses crustal velocity of 3kms-1. Assumes vertical wave propagation, i.e. uses only elevation, not elevation and incidence angle.
 elev_vel=3.0 #Velocity for elevation correction
@@ -286,8 +286,8 @@ DO_RADPAT=N #Normalise to radpat (Y/N)
 gridtype=test
 # gridtype=full
 if [ $gridtype == "test" ]; then
-  slo_min=1.0; slo_inc=.25; slo_max=10.0
-  baz_min=-40; baz_inc=2; baz_max=40
+  slo_min=5.0; slo_inc=.5; slo_max=13.0
+  baz_min=-20; baz_inc=1; baz_max=20
 elif [ $gridtype == "full" ]; then
   slo_min=0; slo_inc=0.25; slo_max=10.0
   baz_min=-50; baz_inc=1; baz_max=50
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.01; fmax=0.05; delta=60
+    fmin=0.05; fmax=0.5; delta=60
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -320,25 +320,25 @@ elif [ $region == "Plume_1" ]; then
       grid_lat_min=-17; grid_lat_max=17        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=2; grid_lon_max=17   #Range of lons to search and form subarrays
 
+elif [ $region == "Plume_N" ]; then
+      grid_lat_min=0; grid_lat_max=16        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=4; grid_lon_max=16   #Range of lons to search and form subarrays
+
+elif [ $region == "Plume_N_sm" ]; then
+      grid_lat_min=12; grid_lat_max=13        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=10; grid_lon_max=14   #Range of lons to search and form subarrays
+
+elif [ $region == "Plume_S" ]; then
+      grid_lat_min=-16; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=4; grid_lon_max=16   #Range of lons to search and form subarrays
+
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
           grid_lon_min=-93; grid_lon_max=-84   #Range of lons to search and form subarrays
 
-elif [ $region == "GRSN" ]; then
-        grid_lat_min=47.5; grid_lat_max=54.75        #Range of lats to search and form subarrays # for subarray around ILAR
-        grid_lon_min=6; grid_lon_max=14.5   #Range of lons to search and form subarrays
-
 elif [ $region == "AK_whole" ]; then
       grid_lat_min=55; grid_lat_max=73        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=-169; grid_lon_max=-137   #Range of lons to search and form subarrays
-
-elif [ $region == "AlSub_sm" ]; then
-      grid_lat_min=64; grid_lat_max=66        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=-150; grid_lon_max=-146   #Range of lons to search and form subarrays
-
-elif [ $region == "AlSub_sm_W" ]; then
-      grid_lat_min=64.5; grid_lat_max=66        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=-152; grid_lon_max=-147.8
 
 elif [ $region == "AlSub_sm_N" ]; then
       grid_lat_min=65; grid_lat_max=67        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -354,10 +354,6 @@ elif [ $region == "AlpArray" ]; then
     	grid_lon_min=${grid_range[2]}; grid_lon_max=${grid_range[3]}        #Range of lats to search and form subarrays
     	echo grid_lat $grid_lat_min $grid_lat_max grid_lon $grid_lon_min $grid_lon_max
 
-elif [ $region == "Aus" ]; then
-    	grid_lat_min=-45; grid_lat_max=10        #Range of lats to search and form subarrays
-    	grid_lon_min=105; grid_lon_max=160    #Range of lons to search and form subarrays
-
 elif [ $region == "US" ]; then
     	grid_lat_min=25; grid_lat_max=50        #Range of lats to search and form subarrays
     	grid_lon_min=-130; grid_lon_max=-60    #Range of lons to search and form subarrays
@@ -367,15 +363,14 @@ elif [ $region == "Mex" ]; then
     	grid_lon_min=-120; grid_lon_max=-60    #Range of lons to search and form subarrays
 fi
 
-
 # grid_inc=2.5# /2 for smllaer/1 for ilar          #used for sub-array Alaska  #Increment for grid spacing (in degrees)
 #was 6 for whole grsn
-grid_inc=2  #Increment for grid spacing (in degrees)
+grid_inc=3  #Increment for grid spacing (in degrees)
 
 #===========
 #Subarray Options
 #===========
-number_min=12 #Minimum desired number of stations
+number_min=15 #Minimum desired number of stations
 number_max=75 #Maximum desired number of stations
 
 gridsize=7 # for grid station arrangement
@@ -484,7 +479,7 @@ for sacfile in `ls *$sacroot`; do
 	       time_beg=`sachead $sacfile B | awk '{print $2}'`
                time_end=`sachead $sacfile E | awk '{print $2}'`
 	       length_flag=`echo $time_beg $time_end | awk '{if (($1>2000) || ($2<100)) print "SHT"; else print "LNG"}'`
-	       if [ $length_flag == "SHT" ]; then
+	       if [ $length_flag == "SHM" ]; then
 		       echo $stanm >> stations_to_remove.$eventdate
 	       fi
 	       echo $cnt : $stanm $depmin $depmax >> STA_AMP_LIST.txt
@@ -703,7 +698,7 @@ echo ==
 # radius change
 # for all st in GRSN together, use rad =8
 if [ $selection_type == "CIRC" ]; then
-    search_radius=2.5 # was 1.25 for AK all
+    search_radius=3 # was 1.25 for AK all
     awk '$5<='$search_radius' {print $7, $8}' TEMP_LIST_STATION_LOCS | awk 'NR<='$number_max'' > STATIONS_TO_SELECT.DAT
 
 elif [ $selection_type == "GRID" ]; then
