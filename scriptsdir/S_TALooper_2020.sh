@@ -31,7 +31,7 @@ shopt -s expand_aliases
 
 #SmKS_TALooper_2020.sh 1 Z AK_whole obs
 #SmKS_TALooper_2020.sh 1 Z TA_2012 obs
-#SmKS_TALooper_2020.sh 1 Z Plume_N synth
+#S_TALooper_2020.sh 1 R Plume_N synth
 # SmKS_TALooper_2020.sh 81 Z AK_whole synth
 #=============
 #Codes needed:
@@ -261,7 +261,7 @@ fi
 
 #TO REMOVE - when ready to run all phaes, add comments/delete the writing of "Input_Phase_List_"$$  below
 cat<<EOF>$work"Input_Phase_List_"$$
-P P 22 95
+S S 22 95
 EOF
 #PP PP 60 130 P P 40 90
 phase_list=(`awk '{print $1}' $work"Input_Phase_List_"$$`)
@@ -286,7 +286,7 @@ DO_RADPAT=N #Normalise to radpat (Y/N)
 gridtype=test
 # gridtype=full
 if [ $gridtype == "test" ]; then
-  slo_min=5.0; slo_inc=.5; slo_max=15.0
+  slo_min=5.0; slo_inc=1; slo_max=20.0
   baz_min=-20; baz_inc=1; baz_max=20
 elif [ $gridtype == "full" ]; then
   slo_min=0; slo_inc=0.25; slo_max=10.0
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=1; delta=100
+    fmin=0.01; fmax=.1; delta=100
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -469,9 +469,10 @@ if [ $firstrun == "Y" ]; then
 \rm -f STA_AMP_LIST.txt; touch STA_AMP_LIST.txt
 cnt=1
 for sacfile in `ls *$sacroot`; do
+
 	       stanm=`sachead $sacfile kstnm | awk '{print $2}'`
-	       depmin=`sachead $sacfile depmin | awk '{print $2}'`
-	       depmax=`sachead $sacfile depmax | awk '{print $2}'`
+	       depmin=`sachead $sacfile depmin | awk '{printf "%.12e\n", $2}'`
+	       depmax=`sachead $sacfile depmax | awk '{printf "%.12e\n", $2}'`
 	       stala=`sachead $sacfile stla | awk '{print $2}'`
 	       stalo=`sachead $sacfile stlo | awk '{print $2}'`
 	       stael=`sachead $sacfile stel | awk '{print $2}'`
@@ -494,12 +495,14 @@ pwd
 #Check over each trace in file to see if AMP_LIST.txt has amplitude values or not
 #This filters out dead traces and removes them from STA_LIST.txt
 # added two more zeros to scaling.
+
 unset nanvar
 med_min=`awk '{printf "%.25f\n", $4}' STA_AMP_LIST.txt | sort -n | awk ' { a[i++]=$1; } END { x=int((i+1)/2); if (x < (i+1)/2) print (a[x-1]+a[x])/2; else print a[x-1]; }' | awk '{printf "%.25f\n", $1*1000}'`
 med_max=`awk '{printf "%.25f\n", $5}' STA_AMP_LIST.txt | sort -n | awk ' { a[i++]=$1; } END { x=int((i+1)/2); if (x < (i+1)/2) print (a[x-1]+a[x])/2; else print a[x-1]; }' | awk '{printf "%.25f\n", $1*1000}'`
 echo med_min $med_min med_max $med_max
 nanvar=(`awk -v med_min=$med_min -v med_max=$med_max '{if ($4=="nan" || $4==0 || $5=="nan" || $5==0 || $4<med_min) print $3}' STA_AMP_LIST.txt`)
 
+unset nanvar
 
 echo nanvar ${nanvar[*]}
 echo ==
