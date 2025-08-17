@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.01; fmax=.1; delta=100
+    fmin=0.02; fmax=.2; delta=60
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -818,9 +818,9 @@ echo =============
 
 
 master_results_list=$work"/TA_SubArray_SmKS_Search_"$eventdate"_"$comproot$comp"_"$phase".dat"
-echo SmKS_Vespapack_2020.sh $fmin $fmax $comp $delta $number_min $eventdate $basestation $basestation_lat $basestation_lon $grid_lat $grid_lon $master_results_list $grid_num $slo_min $slo_inc $slo_max $baz_min $baz_inc $baz_max $phase $phase_taup $DO_CIRC $DO_ELEV $elev_vel $DO_RADPAT
+echo S_Vespapack_2020.sh $fmin $fmax $comp $delta $number_min $eventdate $basestation $basestation_lat $basestation_lon $grid_lat $grid_lon $master_results_list $grid_num $slo_min $slo_inc $slo_max $baz_min $baz_inc $baz_max $phase $phase_taup $DO_CIRC $DO_ELEV $elev_vel $DO_RADPAT
 echo RUNNING
-SmKS_Vespapack_2020.sh $fmin $fmax $comp $delta $number_min $eventdate $basestation $basestation_lat $basestation_lon $grid_lat $grid_lon $master_results_list $grid_num $slo_min $slo_inc $slo_max $baz_min $baz_inc $baz_max $phase $phase_taup $DO_CIRC $DO_ELEV $elev_vel $DO_RADPAT
+S_Vespapack_2020.sh $fmin $fmax $comp $delta $number_min $eventdate $basestation $basestation_lat $basestation_lon $grid_lat $grid_lon $master_results_list $grid_num $slo_min $slo_inc $slo_max $baz_min $baz_inc $baz_max $phase $phase_taup $DO_CIRC $DO_ELEV $elev_vel $DO_RADPAT
 #TO REMOVE
 
 fi

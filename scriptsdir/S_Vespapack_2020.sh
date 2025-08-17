@@ -459,7 +459,7 @@ echo phase $phase phasepred ${phasePRED[*]}
 # if [ -z ${Pwave[0]} ]; then
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-250}'`
 # else
-cutmin=`echo ${Swave[0]} | awk '{print $1-40}'`
+cutmin=`echo ${Swave[0]} | awk '{print $1-50}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
 cutmax=`echo ${Swave[0]} | awk '{print $1+150}'`
@@ -628,7 +628,13 @@ for sacfile in `ls *$sackey`; do
     sac2xy $sacfile_fil sacfile.xy
     sig_max=`awk -v phtime=$phtime -v ph_half_wid=$ph_half_wid '$1>(phtime-ph_half_wid) && $1<=(phtime+ph_half_wid) {printf "%.17f\n", sqrt($2**2)}' sacfile.xy | sort -nrk1 | head -n1`
     noi_max=`awk -v phtime=$phtime -v noi_wid=$noi_wid '$1>(phtime-(noi_wid*2)) && $1<=(phtime-noi_wid)' sacfile.xy | awk '{S+=($2**2); N+=1} END {print sqrt(S/N)}'`
-    snr_trace=`echo $sig_max $noi_max | awk '{printf "%5.2f", $1/$2}'`
+    if (( $(echo "$noi_max > 0" | bc -l) )); then
+      snr_trace=$(echo "$sig_max $noi_max" | awk '{printf "%5.2f", $1/$2}')
+    else
+      echo "WARNING: noi_max=0 for $sacfile" >&2
+      snr_trace="NaN"  # or 0.00 or some other placeholder
+    fi
+    # snr_trace=`echo $sig_max $noi_max | awk '{printf "%5.2f", $1/$2}'`
 
 
 #Normalise trace to max amp in direction of radiation pattern (max +ve if +ve rad pat, and vice versa)
