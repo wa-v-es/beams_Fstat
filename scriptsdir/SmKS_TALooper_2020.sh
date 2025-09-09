@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=1; delta=100
+    fmin=0.05; fmax=.5; delta=100
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -863,6 +863,7 @@ fi
 #LOOP OVER GRID OF ARRAY AND SELECT A BASE STATION TO USE: END
 #--------------------------------------------------------
 ((grid_num+=1))
+# exit
 done
 done
 

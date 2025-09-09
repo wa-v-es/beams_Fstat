@@ -290,6 +290,7 @@ fi
 pPdiff=(`awk '/ pPdiff / {print $4, $5, "pPdiff"}' $temps"PHASE_TIMES_TEMP_$$"`)
 sPdiff=(`awk '/ sPdiff / {print $4, $5, "sPdiff"}' $temps"PHASE_TIMES_TEMP_$$"`)
 ScS=(`awk '/ ScS/ {print $4, $5, "ScS"}' $temps"PHASE_TIMES_TEMP_$$"`)
+SP=(`awk '/ SP / {print $4, $5, "SP"}' $temps"PHASE_TIMES_TEMP_$$"`)
 Swave=(`awk '/ S / {print $4, $5, "S"}' $temps"PHASE_TIMES_TEMP_$$"`)
 SS=(`awk '/ SS / {print $4, $5, "SS"}' $temps"PHASE_TIMES_TEMP_$$"`)
 SSS=(`awk '/ SSS / {print $4, $5, "SSS"}' $temps"PHASE_TIMES_TEMP_$$"`)
@@ -362,6 +363,8 @@ echo S ${Swave[*]}
 echo sP ${sPwave[*]}
 echo sS ${sSwave[*]}
 echo pS ${pSwave[*]}
+echo SP ${SP[*]}
+
 
 #echo PKiKP ${PKiKP[*]}
 #echo sPdiff ${sPdiff[*]}
@@ -388,6 +391,7 @@ ${Swave[0]} ${Swave[1]} 0 ${Swave[2]}
 ${sPwave[0]} ${sPwave[1]} 0 ${sPwave[2]}
 ${sSwave[0]} ${sSwave[1]} 0 ${sSwave[2]}
 ${pSwave[0]} ${pSwave[1]} 0 ${pSwave[2]}
+${SP[0]} ${SP[1]} 0 ${SP[2]}
 EOF
 
 #Print to files for plotting later
@@ -412,7 +416,6 @@ elif [ $phase == "ScS" ]; then
     phasePRED=(${ScS[*]})
 elif [ $phase == "S" ]; then
     phasePRED=(${Swave[*]})
-    slow_min=7.0; slow_max=16.0
 elif [ $phase == "PKS" ]; then
     phasePRED=(${PKS[*]})
 elif [ $phase == "P" ]; then
@@ -459,10 +462,10 @@ echo phase $phase phasepred ${phasePRED[*]}
 # if [ -z ${Pwave[0]} ]; then
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-250}'`
 # else
-cutmin=`echo ${Swave[0]} | awk '{print $1-50}'`
+cutmin=`echo ${Swave[0]} | awk '{print $1-100}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
-cutmax=`echo ${Swave[0]} | awk '{print $1+150}'`
+cutmax=`echo ${Swave[0]} | awk '{print $1+200}'`
 
 echo -- TIME WINDOW FOR CALCULATION --
 echo cutmin $cutmin cutmax $cutmax

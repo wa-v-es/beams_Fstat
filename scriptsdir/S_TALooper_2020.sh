@@ -31,7 +31,7 @@ shopt -s expand_aliases
 
 #SmKS_TALooper_2020.sh 1 Z AK_whole obs
 #SmKS_TALooper_2020.sh 1 Z TA_2012 obs
-#S_TALooper_2020.sh 1 R Plume_N synth
+# S_TALooper_2020.sh 5 R Plume_N synth
 # SmKS_TALooper_2020.sh 81 Z AK_whole synth
 #=============
 #Codes needed:
@@ -298,7 +298,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.02; fmax=.2; delta=60
+    fmin=0.01; fmax=.05; delta=60
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -329,8 +329,8 @@ elif [ $region == "Plume_N_sm" ]; then
       grid_lon_min=10; grid_lon_max=14   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S" ]; then
-      grid_lat_min=-16; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=4; grid_lon_max=16   #Range of lons to search and form subarrays
+      grid_lat_min=-15; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=6; grid_lon_max=16   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -866,6 +866,7 @@ fi
 #LOOP OVER GRID OF ARRAY AND SELECT A BASE STATION TO USE: END
 #--------------------------------------------------------
 ((grid_num+=1))
+# exit
 done
 done
 
