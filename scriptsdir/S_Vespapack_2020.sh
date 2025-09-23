@@ -1394,7 +1394,7 @@ EOF
 #-------------------------------------------------
 #XF BAZ - START (4) ----------
 #-------------------------------------------------
-gmt grdimage $xf_baz_grid $range_baz $frame -C$temps"TEMP_XF.cpt_$$" -B$time_border:"Relative back-azimuth (deg)":WSen:."XF - $phase": -O -K -X$xoffset1 >> $outps
+gmt grdimage $xf_baz_grid $range_baz $frame -C$temps"TEMP_XF.cpt_$$" -B$time_border:"Time (sec)":/2:"Relative back-azimuth (deg)":WSen:."XF - $phase": -O -K -X$xoffset1 >> $outps
 # gmt grdcontour $xf_baz_grid $range_baz $frame -W0.02c,blue -C$xf_grid_inc -Q$contcut_xf -K -O >> $outps
 
 

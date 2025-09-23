@@ -31,7 +31,9 @@ shopt -s expand_aliases
 
 #SmKS_TALooper_2020.sh 1 Z AK_whole obs
 #SmKS_TALooper_2020.sh 1 Z TA_2012 obs
-# S_TALooper_2020.sh 5 R Plume_N synth
+# S_TALooper_2020.sh 12 R Plume_N synth
+# S_TALooper_2020.sh 10 R Plume_S synth
+
 # SmKS_TALooper_2020.sh 81 Z AK_whole synth
 #=============
 #Codes needed:
@@ -298,7 +300,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.01; fmax=.05; delta=60
+    fmin=0.01; fmax=.05; delta=120
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -321,7 +323,7 @@ elif [ $region == "Plume_1" ]; then
       grid_lon_min=2; grid_lon_max=17   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N" ]; then
-      grid_lat_min=1; grid_lat_max=14        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lat_min=1; grid_lat_max=19        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N_sm" ]; then
@@ -329,8 +331,8 @@ elif [ $region == "Plume_N_sm" ]; then
       grid_lon_min=10; grid_lon_max=14   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S" ]; then
-      grid_lat_min=-15; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=6; grid_lon_max=16   #Range of lons to search and form subarrays
+      grid_lat_min=-19; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -784,7 +786,7 @@ echo ---
 #-----------------------
 #FOR TESTING: FOR USE IF YOU WANT TO LOOP OVER FILTER FREQUENCIES AND TIME STEPS
 #-----------------------
-# for fmin in `echo 0.05 0.1`; do
+# for fmin in `echo 0.01 0.02 .03`; do
 #for delta in `echo 20 40 60 80 100 120 140 160 180 200 250 300`; do
 
 #fmin loop
