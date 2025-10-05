@@ -300,7 +300,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.01; fmax=.05; delta=120
+    fmin=0.01; fmax=.05; delta=180
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -323,16 +323,20 @@ elif [ $region == "Plume_1" ]; then
       grid_lon_min=2; grid_lon_max=17   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N" ]; then
-      grid_lat_min=1; grid_lat_max=19        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lat_min=1; grid_lat_max=15        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N_sm" ]; then
-      grid_lat_min=12; grid_lat_max=13        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=10; grid_lon_max=14   #Range of lons to search and form subarrays
+      grid_lat_min=0; grid_lat_max=7        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S" ]; then
       grid_lat_min=-19; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
+
+elif [ $region == "Plume_S_sm" ]; then
+      grid_lat_min=-7; grid_lat_max=-3        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -367,7 +371,7 @@ fi
 
 # grid_inc=2.5# /2 for smllaer/1 for ilar          #used for sub-array Alaska  #Increment for grid spacing (in degrees)
 #was 6 for whole grsn
-grid_inc=3  #Increment for grid spacing (in degrees)
+grid_inc=2  #Increment for grid spacing (in degrees)
 
 #===========
 #Subarray Options
@@ -574,7 +578,7 @@ awk -v baselim=$baselim '{if ($2>('$grid_lat'-baselim) && $2<=('$grid_lat'+basel
 awk -v baselim=$baselim '{if ($2>('$grid_lat'-baselim) && $2<=('$grid_lat'+baselim) && $3>('$grid_lon'-baselim) && $3<=('$grid_lon'+baselim)) print $1}' $station_list_total > base_name_$$
 $py3 $pydir"distcalc_geodesic_LIST_SmKS.py" base_list_$$ base_list_out_$$ #Prints out: BaseStaLat BaseStaLon StaLat StaLon Dist Az
 basestation=`paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $7}'`
-#DEBUG paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $0}'
+DEBUG paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $0}'
 \rm base_list_$$ base_list_out_$$ base_name_$$
 
 
@@ -609,7 +613,9 @@ fi
 
 
 #Set grid to base station location
-basestation_LL=(`awk '$1~"'$basestation'" {print $2, $3}' $station_list_total`)
+#basestation_LL=(`awk '$1~"'$basestation'" {print $2, $3}' $station_list_total`)
+basestation_LL=( $(awk -v b="$basestation" '$1==b {print $2, $3; exit}' "$station_list_total") )
+
 basestation_lat=${basestation_LL[0]}
 basestation_lon=${basestation_LL[1]}
 echo BASESTATION_LAT: ${basestation_LL[0]} BASESTATION_LON: ${basestation_LL[1]} BASESTATION_NAME $basestation
@@ -868,7 +874,7 @@ fi
 #LOOP OVER GRID OF ARRAY AND SELECT A BASE STATION TO USE: END
 #--------------------------------------------------------
 ((grid_num+=1))
-# exit
+exit
 done
 done
 

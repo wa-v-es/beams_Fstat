@@ -456,7 +456,7 @@ echo phase $phase phasepred ${phasePRED[*]}
 cutmin=`echo ${Pwave[0]} | awk '{print $1-40}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
-cutmax=`echo ${Pwave[0]} | awk '{print $1+150}'`
+cutmax=`echo ${Pwave[0]} | awk '{print $1+200}'`
 
 echo -- TIME WINDOW FOR CALCULATION --
 echo cutmin $cutmin cutmax $cutmax

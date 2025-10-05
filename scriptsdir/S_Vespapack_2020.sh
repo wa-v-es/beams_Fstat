@@ -462,10 +462,10 @@ echo phase $phase phasepred ${phasePRED[*]}
 # if [ -z ${Pwave[0]} ]; then
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-250}'`
 # else
-cutmin=`echo ${Swave[0]} | awk '{print $1-100}'`
+cutmin=`echo ${Swave[0]} | awk '{print $1-50}'`
 # fi
 # cutmin=`echo ${phasePRED[0]} | awk '{print $1-300}'`
-cutmax=`echo ${Swave[0]} | awk '{print $1+200}'`
+cutmax=`echo ${Swave[0]} | awk '{print $1+300}'`
 
 echo -- TIME WINDOW FOR CALCULATION --
 echo cutmin $cutmin cutmax $cutmax
@@ -1395,6 +1395,11 @@ EOF
 #XF BAZ - START (4) ----------
 #-------------------------------------------------
 gmt grdimage $xf_baz_grid $range_baz $frame -C$temps"TEMP_XF.cpt_$$" -B$time_border:"Time (sec)":/2:"Relative back-azimuth (deg)":WSen:."XF - $phase": -O -K -X$xoffset1 >> $outps
+# gmt plot -R -J -O -K -W2,white << EOF >> $outps
+# ${plotcutmin} 0
+# ${plotcutmax} 0
+# EOF
+
 # gmt grdcontour $xf_baz_grid $range_baz $frame -W0.02c,blue -C$xf_grid_inc -Q$contcut_xf -K -O >> $outps
 
 

@@ -33,6 +33,8 @@ shopt -s expand_aliases
 #SmKS_TALooper_2020.sh 1 Z TA_2012 obs
 #SmKS_TALooper_2020.sh 1 Z Plume_N synth
 # SmKS_TALooper_2020.sh 81 Z AK_whole synth
+# SmKS_TALooper_2020.sh 1 Z Plume_S_sm synth
+
 #=============
 #Codes needed:
 #=============
@@ -298,7 +300,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=.5; delta=100
+    fmin=0.05; fmax=.5; delta=120
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -331,6 +333,10 @@ elif [ $region == "Plume_N_sm" ]; then
 elif [ $region == "Plume_S" ]; then
       grid_lat_min=-16; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=4; grid_lon_max=16   #Range of lons to search and form subarrays
+
+elif [ $region == "Plume_S_sm" ]; then
+      grid_lat_min=-5; grid_lat_max=-3        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -365,7 +371,7 @@ fi
 
 # grid_inc=2.5# /2 for smllaer/1 for ilar          #used for sub-array Alaska  #Increment for grid spacing (in degrees)
 #was 6 for whole grsn
-grid_inc=3  #Increment for grid spacing (in degrees)
+grid_inc=2  #Increment for grid spacing (in degrees)
 
 #===========
 #Subarray Options
@@ -604,7 +610,8 @@ fi
 
 
 #Set grid to base station location
-basestation_LL=(`awk '$1~"'$basestation'" {print $2, $3}' $station_list_total`)
+# basestation_LL=(`awk '$1~"'$basestation'" {print $2, $3}' $station_list_total`)
+basestation_LL=( $(awk -v b="$basestation" '$1==b {print $2, $3; exit}' "$station_list_total") )
 basestation_lat=${basestation_LL[0]}
 basestation_lon=${basestation_LL[1]}
 echo BASESTATION_LAT: ${basestation_LL[0]} BASESTATION_LON: ${basestation_LL[1]} BASESTATION_NAME $basestation
