@@ -392,6 +392,7 @@ ${sPwave[0]} ${sPwave[1]} 0 ${sPwave[2]}
 ${sSwave[0]} ${sSwave[1]} 0 ${sSwave[2]}
 ${pSwave[0]} ${pSwave[1]} 0 ${pSwave[2]}
 ${SP[0]} ${SP[1]} 0 ${SP[2]}
+${SS[0]} ${SS[1]} 0 ${SS[2]}
 EOF
 
 #Print to files for plotting later
@@ -401,6 +402,8 @@ ${sPwave[0]} ${sPwave[1]} 0 ${sPwave[2]}
 ${lpPP[0]} ${lpPP[1]} 0 ${lpPP[2]}
 ${sPdiff[0]} ${sPdiff[1]} 0 ${sPdiff[2]}
 ${pPdiff[0]} ${pPdiff[1]} 0 ${pPdiff[2]}
+${SP[0]} ${SP[1]} 0 ${SP[2]}
+${SS[0]} ${SS[1]} 0 ${SS[2]}
 EOF
 
 

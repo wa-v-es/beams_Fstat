@@ -29,12 +29,11 @@ shopt -s expand_aliases
 #   SmKS_TALooper_2020.bsh $skippingto $comp
 #NOTES: this code should run over all subarrays for a given event, so it can take several days to complete
 
-#SmKS_TALooper_2020.sh 1 Z AK_whole obs
-#SmKS_TALooper_2020.sh 1 Z TA_2012 obs
-# S_TALooper_2020.sh 12 R Plume_N synth
-# S_TALooper_2020.sh 10 R Plume_S synth
 
-# SmKS_TALooper_2020.sh 81 Z AK_whole synth
+# S_TALooper_2020.sh 12 R Plume_N synth
+# S_TALooper_2020.sh 1 R Plume_S_sm synth
+
+#
 #=============
 #Codes needed:
 #=============
@@ -300,7 +299,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.01; fmax=.05; delta=180
+    fmin=0.01; fmax=.04; delta=300
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -327,16 +326,16 @@ elif [ $region == "Plume_N" ]; then
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N_sm" ]; then
-      grid_lat_min=0; grid_lat_max=7        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
+      grid_lat_min=1; grid_lat_max=7        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=7; grid_lon_max=15   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S" ]; then
       grid_lat_min=-19; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S_sm" ]; then
-      grid_lat_min=-7; grid_lat_max=-3        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
+      grid_lat_min=-5; grid_lat_max=-3        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=7; grid_lon_max=15   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
@@ -578,7 +577,7 @@ awk -v baselim=$baselim '{if ($2>('$grid_lat'-baselim) && $2<=('$grid_lat'+basel
 awk -v baselim=$baselim '{if ($2>('$grid_lat'-baselim) && $2<=('$grid_lat'+baselim) && $3>('$grid_lon'-baselim) && $3<=('$grid_lon'+baselim)) print $1}' $station_list_total > base_name_$$
 $py3 $pydir"distcalc_geodesic_LIST_SmKS.py" base_list_$$ base_list_out_$$ #Prints out: BaseStaLat BaseStaLon StaLat StaLon Dist Az
 basestation=`paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $7}'`
-DEBUG paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $0}'
+#DEBUG paste base_list_out_$$ base_name_$$ | sort -n -k5,6 | awk 'NR==1 {print $0}'
 \rm base_list_$$ base_list_out_$$ base_name_$$
 
 
@@ -874,7 +873,7 @@ fi
 #LOOP OVER GRID OF ARRAY AND SELECT A BASE STATION TO USE: END
 #--------------------------------------------------------
 ((grid_num+=1))
-exit
+# exit
 done
 done
 

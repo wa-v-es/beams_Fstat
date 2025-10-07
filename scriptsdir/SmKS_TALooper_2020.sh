@@ -300,7 +300,7 @@ if [ $datatype == "obs" ]; then
     fmin=.05;fmax=.5; delta=60
     #fmin=0.04;fmax=0.5; delta=60
 elif [ $datatype == "synth" ]; then
-    fmin=0.05; fmax=.5; delta=120
+    fmin=0.05; fmax=.5; delta=160
 elif [ $datatype == "synthB" ]; then
     fmin=0.02; fmax=0.083; delta=60
 fi
@@ -327,16 +327,16 @@ elif [ $region == "Plume_N" ]; then
       grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_N_sm" ]; then
-      grid_lat_min=12; grid_lat_max=13        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=10; grid_lon_max=14   #Range of lons to search and form subarrays
+      grid_lat_min=3; grid_lat_max=7        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=7; grid_lon_max=18   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S" ]; then
-      grid_lat_min=-16; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=4; grid_lon_max=16   #Range of lons to search and form subarrays
+      grid_lat_min=-19; grid_lat_max=-1        #Range of lats to search and form subarrays # for subarray around ILAR
+      grid_lon_min=6; grid_lon_max=19   #Range of lons to search and form subarrays
 
 elif [ $region == "Plume_S_sm" ]; then
       grid_lat_min=-5; grid_lat_max=-3        #Range of lats to search and form subarrays # for subarray around ILAR
-      grid_lon_min=5; grid_lon_max=20   #Range of lons to search and form subarrays
+      grid_lon_min=7; grid_lon_max=15   #Range of lons to search and form subarrays
 
 elif [ $region == "TA_2012" ]; then
           grid_lat_min=37; grid_lat_max=48        #Range of lats to search and form subarrays # for subarray around ILAR
